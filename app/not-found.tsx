@@ -1,0 +1,2 @@
+import Link from "next/link";
+export default function NotFound(){return <main className="notfound"><p className="brand">VEZQO<span>.</span></p><h1>404</h1><p>This page isn’t ready yet.</p><Link className="btn primary" href="/">Back home</Link><style>{`.notfound{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}.notfound h1{font-size:76px;margin:12px}.notfound p:not(.brand){color:#a3a69e;margin-bottom:28px}.notfound .brand span{color:#b8f34b}`}</style></main>}
