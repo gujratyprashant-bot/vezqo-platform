@@ -182,3 +182,15 @@
 @media(max-width:900px){.vx-morph-section{grid-template-columns:1fr;gap:25px;padding-top:80px}.vx-morph-copy{max-width:650px}.vx-morph-stage{max-width:650px;width:100%;margin:auto}}
 @media(max-width:650px){.vx-morph-section{padding:72px 6% 55px;gap:12px}.vx-morph-copy h2{font-size:clamp(55px,14vw,76px)}.vx-morph-copy p{font-size:13px}.vx-morph-stage{height:360px;transform:scale(.9);transform-origin:top center;margin-bottom:-28px}.vx-morph-object{width:190px;height:190px}.vx-morph-ring{width:300px;height:120px}.vx-morph-ring-b{width:350px;height:165px}}
 @media(prefers-reduced-motion:reduce){.vx-reveal{opacity:1;transform:none;transition:none}.vx-morph-object,.vx-morph-cross{animation:none}.vx-vote-choice{transition:none}}
+
+/* Real-time WebGL chrome sculpture */
+.vx-morph-stage{min-height:500px}
+.vx-three-host{position:absolute;inset:0;z-index:1;touch-action:pan-y}
+.vx-three-host canvas{display:block;width:100%;height:100%;outline:none}
+.vx-morph-grid{z-index:0}
+.vx-morph-halo{z-index:0}
+.vx-morph-label{z-index:3;pointer-events:none}
+.vx-morph-cross{z-index:3}
+.vx-morph-index{position:absolute;left:50%;bottom:8%;transform:translateX(-50%);z-index:3;display:flex;gap:15px;white-space:nowrap;font:900 7px Arial,sans-serif;letter-spacing:.18em;color:#202c37}
+.vx-morph-index span{color:#9b4b39}
+@media(max-width:650px){.vx-morph-stage{min-height:370px}.vx-three-host{inset:0}}
