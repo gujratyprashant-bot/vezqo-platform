@@ -311,3 +311,45 @@
 @keyframes vx-scroll-orb-in{from{opacity:0;scale:.65}to{opacity:.38;scale:1}}
 @media(max-width:650px){.vx-reveal{transform:translate3d(0,35px,0) scale(.985);filter:none}.vx-reveal.vx-visible{transform:none}}
 @media(prefers-reduced-motion:reduce){.vx-scroll-meter span{transform:none;opacity:.5}.vx-reveal{transform:none;filter:none;transition:none}.vx-mechanism.vx-visible .vx-step,.vx-signal.vx-visible .vx-signal-visual,.vx-final.vx-visible .vx-final-orb{animation:none!important}}
+
+
+/* VEZQO filmic interaction layer — ambient motion, tactile micro-interactions */
+.vx-motion-film{position:fixed;inset:-18%;z-index:-1;overflow:hidden;pointer-events:none;perspective:900px;opacity:.72}
+.vx-motion-film i{position:absolute;display:block;width:52vw;height:52vw;min-width:380px;min-height:380px;border-radius:50%;filter:blur(85px);mix-blend-mode:screen;will-change:transform}
+.vx-motion-film i:nth-child(1){left:4%;top:2%;background:radial-gradient(circle,#5d91c52b,transparent 68%);animation:vx-film-drift-a 24s ease-in-out infinite alternate}
+.vx-motion-film i:nth-child(2){right:2%;top:28%;background:radial-gradient(circle,#f16a4c20,transparent 68%);animation:vx-film-drift-b 29s ease-in-out infinite alternate}
+.vx-motion-film i:nth-child(3){left:25%;bottom:-18%;background:radial-gradient(circle,#6cb9d51c,transparent 68%);animation:vx-film-drift-c 32s ease-in-out infinite alternate}
+.vx-motion-film span{position:absolute;inset:0;background:linear-gradient(115deg,transparent 25%,#b8dcf006 48%,transparent 68%);transform:translateX(-80%);animation:vx-film-sweep 14s ease-in-out infinite}
+.vx-pointer-light{position:fixed;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(420px circle at var(--vx-pointer-x,50%) var(--vx-pointer-y,35%),#a9cce90c,transparent 72%);transition:background .12s linear}
+.vx-page :is(h1,h2,h3,p,a,button,small,strong,span){-webkit-tap-highlight-color:transparent}
+.vx-page :is(h1,h2,h3){text-wrap:balance}
+.vx-page :is(.vx-eyebrow,.vx-section-label,.vx-step-top,.vx-morph-kicker,.vx-final-kicker){transition:letter-spacing .45s,color .35s,text-shadow .35s}
+.vx-page :is(.vx-eyebrow,.vx-section-label,.vx-step-top,.vx-morph-kicker,.vx-final-kicker):hover{letter-spacing:.24em;text-shadow:0 0 22px #b9d8f055}
+.vx-page :is(.vx-intro,.vx-morph-copy p,.vx-step p,.vx-signal-copy p){transition:color .35s,transform .4s}
+.vx-page :is(.vx-intro,.vx-morph-copy p,.vx-step p,.vx-signal-copy p):hover{color:#e0eaf4;transform:translateX(3px)}
+.vx-page :is(.vx-primary,.vx-secondary,.vx-morph-link,.vx-final-button,.vx-login,.vx-vote-choice){transform-style:preserve-3d;backface-visibility:hidden}
+.vx-page :is(.vx-primary,.vx-morph-link,.vx-final-button,.vx-login){isolation:isolate}
+.vx-page :is(.vx-primary,.vx-morph-link,.vx-final-button):after{content:"";position:absolute;inset:0;z-index:-1;opacity:0;background:linear-gradient(115deg,transparent,#fff5 48%,transparent);transform:translateX(-120%);transition:transform .7s,opacity .25s}
+.vx-page :is(.vx-primary,.vx-morph-link,.vx-final-button):hover:after{opacity:1;transform:translateX(120%)}
+.vx-page button:focus-visible,.vx-page a:focus-visible{outline:2px solid #c8e4ff;outline-offset:5px}
+.vx-step,.vx-float,.vx-signal-chip,.vx-morph-stage,.vx-art{will-change:transform}
+.vx-step{overflow:hidden}
+.vx-step:after{content:"";position:absolute;inset:-1px;pointer-events:none;opacity:0;background:linear-gradient(115deg,transparent 20%,#d8ebff12 48%,transparent 75%);transform:translateX(-100%);transition:transform .8s,opacity .3s}
+.vx-step:hover:after{opacity:1;transform:translateX(100%)}
+.vx-step-art .vx-step-glyph{filter:drop-shadow(0 10px 18px #8dbce455)}
+.vx-vote-choice.is-picked{transform:translateZ(12px) scale(1.035);box-shadow:0 0 0 1px #d8eaff88,0 10px 30px #0008,inset 0 0 25px #d8eaff18}
+.vx-ticker{position:relative;overflow:hidden}
+.vx-ticker:before,.vx-ticker:after{content:"";position:absolute;top:0;bottom:0;width:8%;z-index:2;pointer-events:none}
+.vx-ticker:before{left:0;background:linear-gradient(90deg,#080d14,transparent)}
+.vx-ticker:after{right:0;background:linear-gradient(270deg,#080d14,transparent)}
+.vx-final-button b,.vx-primary b,.vx-morph-link b{display:inline-block;transition:transform .35s}
+.vx-page :is(.vx-final-button,.vx-primary,.vx-morph-link):hover b{transform:translate(4px,-4px) rotate(8deg)}
+.vx-art-coordinate,.vx-art-index,.vx-morph-index{transition:opacity .4s,letter-spacing .4s}
+.vx-art:hover .vx-art-coordinate,.vx-art:hover .vx-art-index{letter-spacing:.25em}
+.vx-morph-stage:hover .vx-morph-label{filter:drop-shadow(0 6px 12px #16263844)}
+@keyframes vx-film-drift-a{0%{transform:translate3d(-8%,2%,0) rotate(0) scale(.9)}100%{transform:translate3d(22%,18%,0) rotate(18deg) scale(1.2)}}
+@keyframes vx-film-drift-b{0%{transform:translate3d(12%,-8%,0) rotate(0) scale(1.05)}100%{transform:translate3d(-20%,22%,0) rotate(-22deg) scale(.82)}}
+@keyframes vx-film-drift-c{0%{transform:translate3d(4%,12%,0) scale(.85)}100%{transform:translate3d(-16%,-14%,0) scale(1.18)}}
+@keyframes vx-film-sweep{0%,35%{transform:translateX(-100%)}75%,100%{transform:translateX(100%)}}
+@media(max-width:650px){.vx-motion-film{inset:-28%;opacity:.48}.vx-motion-film i{filter:blur(65px)}.vx-pointer-light{display:none}}
+@media(prefers-reduced-motion:reduce){.vx-motion-film i,.vx-motion-film span{animation:none!important}.vx-page :is(.vx-primary,.vx-morph-link,.vx-final-button):after{display:none}.vx-page :is(.vx-eyebrow,.vx-section-label,.vx-step-top,.vx-morph-kicker,.vx-final-kicker){transition:none}}
