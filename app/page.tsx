@@ -32,10 +32,57 @@ export default function Home() {
       });
     }, { threshold: 0.14 });
     items.forEach((item) => observer.observe(item));
+
+    // Tactile 3D interactions: cards tilt toward the pointer; CTAs respond magnetically.
+    const finePointer = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+    const tiltItems = Array.from(document.querySelectorAll<HTMLElement>(".vx-step, .vx-float, .vx-morph-stage"));
+    const magneticItems = Array.from(document.querySelectorAll<HTMLElement>(".vx-primary, .vx-final-button, .vx-morph-link"));
+    const moveTilt = (event: PointerEvent) => {
+      const el = event.currentTarget as HTMLElement;
+      const rect = el.getBoundingClientRect();
+      const x = (event.clientX - rect.left) / rect.width - .5;
+      const y = (event.clientY - rect.top) / rect.height - .5;
+      el.style.setProperty("--vx-tilt-x", String(-y * 7));
+      el.style.setProperty("--vx-tilt-y", String(x * 9));
+      el.style.setProperty("--vx-glow-x", `${(x + .5) * 100}%`);
+      el.style.setProperty("--vx-glow-y", `${(y + .5) * 100}%`);
+      el.classList.add("vx-pointer-active");
+    };
+    const resetTilt = (event: PointerEvent) => {
+      const el = event.currentTarget as HTMLElement;
+      el.style.setProperty("--vx-tilt-x", "0");
+      el.style.setProperty("--vx-tilt-y", "0");
+      el.classList.remove("vx-pointer-active");
+    };
+    const moveMagnet = (event: PointerEvent) => {
+      const el = event.currentTarget as HTMLElement;
+      const rect = el.getBoundingClientRect();
+      const x = event.clientX - rect.left - rect.width / 2;
+      const y = event.clientY - rect.top - rect.height / 2;
+      el.style.setProperty("--vx-magnet-x", `${x * .12}px`);
+      el.style.setProperty("--vx-magnet-y", `${y * .16}px`);
+    };
+    const resetMagnet = (event: PointerEvent) => {
+      const el = event.currentTarget as HTMLElement;
+      el.style.setProperty("--vx-magnet-x", "0px");
+      el.style.setProperty("--vx-magnet-y", "0px");
+    };
+    if (finePointer && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      tiltItems.forEach((el) => {
+        el.addEventListener("pointermove", moveTilt);
+        el.addEventListener("pointerleave", resetTilt);
+      });
+      magneticItems.forEach((el) => {
+        el.addEventListener("pointermove", moveMagnet);
+        el.addEventListener("pointerleave", resetMagnet);
+      });
+    }
     return () => {
       observer.disconnect();
       window.removeEventListener("scroll", updateScroll);
       window.removeEventListener("resize", updateScroll);
+      tiltItems.forEach((el) => { el.removeEventListener("pointermove", moveTilt); el.removeEventListener("pointerleave", resetTilt); });
+      magneticItems.forEach((el) => { el.removeEventListener("pointermove", moveMagnet); el.removeEventListener("pointerleave", resetMagnet); });
     };
   }, []);
   return (
@@ -108,6 +155,28 @@ export default function Home() {
       <section id="signal" className="vx-signal vx-reveal">
         <div className="vx-signal-visual"><div className="vx-signal-ring"/><div className="vx-signal-core">V<span>.</span></div><div className="vx-signal-chip vx-chip-a">HONEST BY DESIGN</div><div className="vx-signal-chip vx-chip-b">NO MAYBES</div></div>
         <div className="vx-signal-copy"><div className="vx-eyebrow vx-eyebrow-light"><span>03 / THE POINT</span><i/> BUILT FOR THE MOMENT BEFORE YOU BUILD</div><h2>THE WORLD<br/>DOESN'T OWE<br/><em>YOU A YES.</em></h2><p>And that's exactly why you should ask. VEZQO gives ideas a place to meet unfiltered public opinion—before time, money, and momentum are on the line.</p><a className="vx-primary vx-primary-light" href="/signup">PUT YOUR IDEA UP <b>↗</b></a></div>
+      </section>
+
+      <section className="vx-proof-lab vx-reveal">
+        <div className="vx-lab-head"><span>THE VEZQO DIFFERENCE / 004</span><span>LESS NOISE. MORE SIGNAL.</span></div>
+        <div className="vx-lab-grid">
+          <article className="vx-lab-card vx-lab-feature">
+            <div className="vx-lab-number">01</div><div className="vx-lab-orb">◎</div>
+            <span>NO POLITE MAYBES</span><h3>MAKE THE<br/><em>CHOICE</em> CLEAR.</h3>
+            <p>One focused question. Two honest directions. A signal you can actually interpret.</p>
+          </article>
+          <article className="vx-lab-card">
+            <div className="vx-lab-number">02</div><div className="vx-lab-symbol">⌁</div>
+            <span>BUILT FOR REAL REACTIONS</span><h3>BEYOND<br/>THE CLICK.</h3>
+            <p>Look past the vote. Understand what makes people lean in, hesitate, or walk away.</p>
+          </article>
+          <article className="vx-lab-card">
+            <div className="vx-lab-number">03</div><div className="vx-lab-symbol">↗</div>
+            <span>DECIDE WITH INTENT</span><h3>MOVE WITH<br/><em>EVIDENCE.</em></h3>
+            <p>Use the response as input for your next move—not as a promise of guaranteed success.</p>
+          </article>
+        </div>
+        <div className="vx-lab-foot"><span>IDEAS ARE CHEAP. CLARITY ISN'T.</span><a href="/signup">PUT YOUR IDEA TO THE TEST <b>↗</b></a></div>
       </section>
 
       <section className="vx-final vx-reveal"><div className="vx-final-kicker">YOUR MOVE / 004</div><h2>MAKE THE IDEA.<br/><span>FACE THE CROWD.</span></h2><a href="/signup" className="vx-final-button">LET THEM DECIDE <b>↗</b></a><div className="vx-final-orb"/></section>
