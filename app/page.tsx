@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Logo from "./components/logo";
 
 const steps = [
@@ -11,6 +11,20 @@ const steps = [
 
 export default function Home() {
   const [pointer, setPointer] = useState({ x: 0, y: 0 });
+  const [vote, setVote] = useState<"want" | "kill" | null>(null);
+  useEffect(() => {
+    const items = document.querySelectorAll(".vx-reveal");
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("vx-visible");
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.14 });
+    items.forEach((item) => observer.observe(item));
+    return () => observer.disconnect();
+  }, []);
   return (
     <main className="vx-page" onMouseMove={(e) => {
       const r=e.currentTarget.getBoundingClientRect();
@@ -52,7 +66,7 @@ export default function Home() {
             <div className="vx-sculpture-caption">V / VEZQO</div>
           </div>
           <div className="vx-float vx-float-top"><span>LIVE VERDICT</span><strong>THE NEXT<br/>BIG THING?</strong><small>THE CROWD DECIDES.</small></div>
-          <div className="vx-float vx-float-bottom"><div className="vx-vote-head"><span>PUBLIC SIGNAL</span><span>01—02</span></div><div className="vx-vote-row"><b>WANT IT</b><i/><strong>72</strong></div><div className="vx-vote-row vx-kill"><b>KILL IT</b><i/><strong>28</strong></div><div className="vx-vote-foot">A HYPOTHETICAL PREVIEW / NOT LIVE DATA</div></div>
+          <div className="vx-float vx-float-bottom vx-interactive-vote"><div className="vx-vote-head"><span>TRY THE VERDICT</span><span>DEMO</span></div><div className="vx-vote-question">Would you use an app that turns ideas into public votes?</div><button className={`vx-vote-choice vx-choice-want ${vote === "want" ? "is-picked" : ""}`} onClick={() => setVote("want")}>WANT IT <b>↗</b></button><button className={`vx-vote-choice vx-choice-kill ${vote === "kill" ? "is-picked" : ""}`} onClick={() => setVote("kill")}>KILL IT <b>×</b></button><div className="vx-vote-foot">{vote ? "YOUR DEMO VOTE: " + (vote === "want" ? "WANT IT" : "KILL IT") : "INTERACTIVE PREVIEW / NOT A LIVE PUBLIC VOTE"}</div></div>
           <div className="vx-art-coordinate">26°N / IDEA IN MOTION</div>
           <div className="vx-art-cross vx-cross-a">+</div><div className="vx-art-cross vx-cross-b">+</div>
         </div>
@@ -61,18 +75,18 @@ export default function Home() {
 
       <div className="vx-ticker"><div>LESS GUESSING <b>✳</b> MORE KNOWING <b>✳</b> PUT IT TO THE PEOPLE <b>✳</b> LESS GUESSING <b>✳</b> MORE KNOWING <b>✳</b> PUT IT TO THE PEOPLE <b>✳</b></div></div>
 
-      <section id="mechanism" className="vx-mechanism">
+      <section id="mechanism" className="vx-mechanism vx-reveal">
         <div className="vx-section-label"><span>THE MECHANISM</span><span>02 — HOW IT WORKS</span></div>
         <div className="vx-section-title"><h2>NO GUESSES.<br/><i>JUST SIGNAL.</i></h2><p>Three moves between “I have an idea” and “I know what people think.”</p></div>
         <div className="vx-steps">{steps.map((s,i)=><article className="vx-step" key={s.n}><div className="vx-step-top"><span>{s.n} / {s.tag}</span><b>↗</b></div><div className={"vx-step-art vx-step-art-"+i}><div className="vx-step-glyph">{i===0?"✳":i===1?"↗":"◉"}</div><div className="vx-step-orbit"/></div><h3>{s.title}</h3><p>{s.text}</p></article>)}</div>
       </section>
 
-      <section id="signal" className="vx-signal">
+      <section id="signal" className="vx-signal vx-reveal">
         <div className="vx-signal-visual"><div className="vx-signal-ring"/><div className="vx-signal-core">V<span>.</span></div><div className="vx-signal-chip vx-chip-a">HONEST BY DESIGN</div><div className="vx-signal-chip vx-chip-b">NO MAYBES</div></div>
         <div className="vx-signal-copy"><div className="vx-eyebrow vx-eyebrow-light"><span>03 / THE POINT</span><i/> BUILT FOR THE MOMENT BEFORE YOU BUILD</div><h2>THE WORLD<br/>DOESN'T OWE<br/><em>YOU A YES.</em></h2><p>And that's exactly why you should ask. VEZQO gives ideas a place to meet unfiltered public opinion—before time, money, and momentum are on the line.</p><a className="vx-primary vx-primary-light" href="/signup">PUT YOUR IDEA UP <b>↗</b></a></div>
       </section>
 
-      <section className="vx-final"><div className="vx-final-kicker">YOUR MOVE / 004</div><h2>MAKE THE IDEA.<br/><span>FACE THE CROWD.</span></h2><a href="/signup" className="vx-final-button">LET THEM DECIDE <b>↗</b></a><div className="vx-final-orb"/></section>
+      <section className="vx-final vx-reveal"><div className="vx-final-kicker">YOUR MOVE / 004</div><h2>MAKE THE IDEA.<br/><span>FACE THE CROWD.</span></h2><a href="/signup" className="vx-final-button">LET THEM DECIDE <b>↗</b></a><div className="vx-final-orb"/></section>
       <footer className="vx-footer"><Logo compact/><span>IDEAS DESERVE EVIDENCE.</span><span>© {new Date().getFullYear()} VEZQO</span></footer>
     </main>
   );
