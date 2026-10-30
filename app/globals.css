@@ -353,3 +353,32 @@
 @keyframes vx-film-sweep{0%,35%{transform:translateX(-100%)}75%,100%{transform:translateX(100%)}}
 @media(max-width:650px){.vx-motion-film{inset:-28%;opacity:.48}.vx-motion-film i{filter:blur(65px)}.vx-pointer-light{display:none}}
 @media(prefers-reduced-motion:reduce){.vx-motion-film i,.vx-motion-film span{animation:none!important}.vx-page :is(.vx-primary,.vx-morph-link,.vx-final-button):after{display:none}.vx-page :is(.vx-eyebrow,.vx-section-label,.vx-step-top,.vx-morph-kicker,.vx-final-kicker){transition:none}}
+
+/* VEZQO signature pass — pointer-reactive depth + new editorial chapter */
+.vx-pointer-active{transform:perspective(900px) rotateX(calc(var(--vx-tilt-x,0)*1deg)) rotateY(calc(var(--vx-tilt-y,0)*1deg)) translateY(-5px)!important}
+.vx-step.vx-pointer-active,.vx-float.vx-pointer-active,.vx-morph-stage.vx-pointer-active{box-shadow:0 32px 85px #0009,0 0 42px #a9cce91b}
+.vx-step:before,.vx-float:before{background:radial-gradient(260px circle at var(--vx-glow-x,50%) var(--vx-glow-y,50%),#d7e9f820,transparent 72%)}
+.vx-primary,.vx-final-button,.vx-morph-link{translate:var(--vx-magnet-x,0) var(--vx-magnet-y,0);transition:translate .22s ease,transform .28s cubic-bezier(.2,.8,.2,1),box-shadow .28s}
+.vx-proof-lab{position:relative;padding:110px 5.5% 95px;background:linear-gradient(145deg,#dce6ef,#f1f4f6 48%,#cbd9e6);color:#0b1420;overflow:hidden}
+.vx-proof-lab:before{content:"";position:absolute;inset:0;opacity:.35;background-image:linear-gradient(#263b5010 1px,transparent 1px),linear-gradient(90deg,#263b5010 1px,transparent 1px);background-size:34px 34px;mask-image:linear-gradient(90deg,transparent,#000 20%,#000 80%,transparent)}
+.vx-lab-head,.vx-lab-foot{position:relative;display:flex;justify-content:space-between;gap:20px;font-size:9px;font-weight:900;letter-spacing:.18em}
+.vx-lab-head{padding-bottom:22px;border-bottom:1px solid #15253835}
+.vx-lab-grid{position:relative;display:grid;grid-template-columns:1.15fr 1fr 1fr;gap:13px;padding:34px 0}
+.vx-lab-card{min-height:370px;position:relative;overflow:hidden;padding:28px;border:1px solid #172a3a35;background:linear-gradient(145deg,#ffffffb8,#dce5ed99);box-shadow:0 18px 45px #26384b12;transition:transform .55s cubic-bezier(.16,1,.3,1),box-shadow .4s,border-color .4s;transform-style:preserve-3d}
+.vx-lab-card:hover{transform:translateY(-12px) rotateX(3deg) rotateY(-3deg);box-shadow:0 32px 70px #24394b26;border-color:#f16a4c}
+.vx-lab-number{font:700 11px "Space Grotesk",sans-serif;color:#f16a4c}
+.vx-lab-card>span{display:block;margin-top:85px;font-size:8px;font-weight:900;letter-spacing:.16em;color:#647587}
+.vx-lab-card h3{font:900 clamp(30px,3.4vw,48px)/.9 Arial,sans-serif;letter-spacing:-.08em;margin:15px 0}
+.vx-lab-card h3 em{font-style:normal;color:#f16a4c}
+.vx-lab-card p{max-width:300px;color:#526273;font-size:12px;line-height:1.8}
+.vx-lab-orb{position:absolute;right:24px;top:25px;width:100px;height:100px;border-radius:50%;display:grid;place-items:center;font-size:60px;color:#f16a4c;border:1px solid #f16a4c66;box-shadow:0 0 0 12px #f16a4c0c,0 0 0 26px #f16a4c08;animation:vx-lab-pulse 5s ease-in-out infinite}
+.vx-lab-symbol{position:absolute;right:28px;top:28px;font:100px/1 Arial;color:#f16a4c;opacity:.8;transition:transform .5s}
+.vx-lab-card:hover .vx-lab-symbol{transform:rotate(18deg) scale(1.12)}
+.vx-lab-foot{padding-top:23px;border-top:1px solid #15253835;align-items:center}
+.vx-lab-foot a{padding:14px 17px;background:#0b1420;color:#eef3f8;box-shadow:5px 5px 0 #f16a4c;transition:transform .25s,box-shadow .25s}
+.vx-lab-foot a:hover{transform:translate(3px,3px);box-shadow:2px 2px 0 #f16a4c}
+.vx-lab-foot b{color:#f16a4c;margin-left:18px}
+@keyframes vx-lab-pulse{0%,100%{transform:scale(.94) rotate(-8deg)}50%{transform:scale(1.06) rotate(8deg)}}
+@media(max-width:850px){.vx-lab-grid{grid-template-columns:1fr 1fr}.vx-lab-feature{grid-column:1/-1;min-height:310px}.vx-lab-feature>span{margin-top:55px}}
+@media(max-width:600px){.vx-proof-lab{padding:75px 5.5%}.vx-lab-head,.vx-lab-foot{font-size:7px;letter-spacing:.1em}.vx-lab-grid{grid-template-columns:1fr;gap:10px;padding:22px 0}.vx-lab-card,.vx-lab-feature{grid-column:auto;min-height:290px;padding:23px}.vx-lab-card>span{margin-top:55px}.vx-lab-card h3{font-size:42px}.vx-lab-foot{align-items:flex-start;flex-direction:column}.vx-lab-foot a{font-size:9px}}
+@media(prefers-reduced-motion:reduce){.vx-lab-orb{animation:none}.vx-lab-card,.vx-primary,.vx-final-button,.vx-morph-link{transition:none!important}}
