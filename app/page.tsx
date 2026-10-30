@@ -14,6 +14,14 @@ export default function Home() {
   const [pointer, setPointer] = useState({ x: 0, y: 0 });
   const [vote, setVote] = useState<"want" | "kill" | null>(null);
   useEffect(() => {
+    const updateScroll = () => {
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      const progress = max > 0 ? window.scrollY / max : 0;
+      document.documentElement.style.setProperty("--vx-scroll-progress", String(progress));
+    };
+    updateScroll();
+    window.addEventListener("scroll", updateScroll, { passive: true });
+    window.addEventListener("resize", updateScroll);
     const items = document.querySelectorAll(".vx-reveal");
     const observer = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
@@ -24,13 +32,18 @@ export default function Home() {
       });
     }, { threshold: 0.14 });
     items.forEach((item) => observer.observe(item));
-    return () => observer.disconnect();
+    return () => {
+      observer.disconnect();
+      window.removeEventListener("scroll", updateScroll);
+      window.removeEventListener("resize", updateScroll);
+    };
   }, []);
   return (
     <main className="vx-page" onMouseMove={(e) => {
       const r=e.currentTarget.getBoundingClientRect();
       setPointer({x:(e.clientX-r.left)/r.width-.5,y:(e.clientY-r.top)/r.height-.5});
     }}>
+      <div className="vx-scroll-meter" aria-hidden="true"><span /></div>
       <div className="vx-grain" />
       <div className="vx-topbar"><span>AN OPEN SIGNAL FOR UNFINISHED IDEAS</span><span className="vx-live"><i/> THE CROWD IS THE FOCUS GROUP</span></div>
       <nav className="vx-nav"><Logo/><div className="vx-links"><a href="#mechanism">THE MECHANISM</a><a href="#signal">THE SIGNAL</a><a className="vx-login" href="/login">LOG IN <b>↗</b></a></div></nav>
