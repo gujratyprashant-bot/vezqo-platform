@@ -75,6 +75,11 @@ export default function Home() {
 
       <div className="vx-ticker"><div>LESS GUESSING <b>✳</b> MORE KNOWING <b>✳</b> PUT IT TO THE PEOPLE <b>✳</b> LESS GUESSING <b>✳</b> MORE KNOWING <b>✳</b> PUT IT TO THE PEOPLE <b>✳</b></div></div>
 
+      <section className="vx-morph-section vx-reveal">
+        <div className="vx-morph-copy"><span className="vx-morph-kicker">FROM THOUGHT TO SIGNAL / 002</span><h2>AN IDEA IS<br/><em>JUST POTENTIAL.</em></h2><p>Give it a shape. Put it in the open. Let real people turn a hunch into a signal you can actually use.</p><a href="/signup" className="vx-morph-link">TEST YOUR IDEA <b>↗</b></a></div>
+        <div className="vx-morph-stage" aria-label="Abstract chrome object transforming into a digital signal"><div className="vx-morph-grid"/><div className="vx-morph-halo"/><div className="vx-morph-object"><span/><i/><b/></div><div className="vx-morph-ring vx-morph-ring-a"/><div className="vx-morph-ring vx-morph-ring-b"/><div className="vx-morph-label vx-morph-label-a">RAW THOUGHT</div><div className="vx-morph-label vx-morph-label-b">PUBLIC SIGNAL</div><div className="vx-morph-cross">✳</div></div>
+      </section>
+
       <section id="mechanism" className="vx-mechanism vx-reveal">
         <div className="vx-section-label"><span>THE MECHANISM</span><span>02 — HOW IT WORKS</span></div>
         <div className="vx-section-title"><h2>NO GUESSES.<br/><i>JUST SIGNAL.</i></h2><p>Three moves between “I have an idea” and “I know what people think.”</p></div>
