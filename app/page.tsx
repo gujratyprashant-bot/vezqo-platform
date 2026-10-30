@@ -1,2 +1,39 @@
-const steps = [{ n: "01", title: "Describe the idea", text: "Explain your product, app, or service in plain language." }, { n: "02", title: "Let people vote", text: "Collect clear WANT IT or KILL IT reactions from real people." }, { n: "03", title: "Decide with evidence", text: "See the response before spending months building." }];
-export default function Home() { return <main><nav className="nav wrap"><a className="brand" href="/">VEZQO<span>.</span></a><div className="navlinks"><a href="#how">How it works</a><a href="#why">Why validate</a><a className="navlogin" href="/login">Log in</a></div></nav><section className="hero wrap"><div className="eyebrow"><i /> VALIDATE BEFORE YOU BUILD</div><h1>Your idea.<br/><em>The internet<br className="desktop"/> decides.</em></h1><p className="lead">Put your product, app, or big idea in front of people. Get honest WANT IT or KILL IT votes before you spend time and money building.</p><div className="actions"><a className="btn primary" href="/signup">Launch your idea <span>↗</span></a><a className="btn secondary" href="#how">See how it works</a></div><p className="micro">No more building in the dark.</p><div className="orbit orbit1"/><div className="orbit orbit2"/></section><section id="how" className="section wrap"><div className="sectionhead"><span className="kicker">A SIMPLE PROCESS</span><h2>Less guessing.<br/><em>More knowing.</em></h2></div><div className="steps">{steps.map(s=><article className="step" key={s.n}><span className="stepno">{s.n}</span><h3>{s.title}</h3><p>{s.text}</p></article>)}</div></section><section id="why" className="bottom wrap"><div><span className="kicker">YOUR NEXT MOVE STARTS HERE</span><h2>Build what people<br/><em>actually want.</em></h2></div><a className="btn primary" href="/signup">Get started <span>↗</span></a></section><footer className="footer wrap"><a className="brand" href="/">VEZQO<span>.</span></a><span>Ideas deserve evidence.</span><span>© {new Date().getFullYear()} VEZQO</span></footer></main>; }
+import HeroScene from "./components/hero-scene";
+
+const steps = [
+  { n: "01", title: "Drop your idea", text: "Describe the product, app, or service you want to bring into the world." },
+  { n: "02", title: "Get real reactions", text: "Put it in front of people and collect honest WANT IT or KILL IT votes." },
+  { n: "03", title: "Move with a signal", text: "See what resonates before you commit your time and money to building." },
+];
+
+export default function Home() {
+  return (
+    <main>
+      <nav className="nav wrap">
+        <a className="brand" href="/">VEZQO<span>.</span></a>
+        <div className="navlinks"><a href="#how">How it works</a><a href="#manifesto">The why</a><a className="navlogin" href="/login">Log in</a></div>
+      </nav>
+
+      <section className="hero wrap">
+        <div className="hero-copy">
+          <div className="eyebrow"><i /> THE INTERNET IS YOUR TEST MARKET</div>
+          <h1>Don’t just<br />build an idea.<br /><em>Prove it.</em></h1>
+          <p className="lead">Your next big thing deserves more than a guess. Put it in front of real people and discover whether they want it before you build it.</p>
+          <div className="actions"><a className="btn primary" href="/signup">Test your idea <span>↗</span></a><a className="btn secondary" href="#how">Explore the process <span>↓</span></a></div>
+          <div className="hero-proof"><span className="proof-dot" /> A clearer signal for your next move</div>
+        </div>
+        <HeroScene />
+        <div className="hero-bottomline"><span>01 / THINK</span><span>02 / TEST</span><span>03 / KNOW</span></div>
+      </section>
+
+      <section id="how" className="section wrap">
+        <div className="sectionhead"><div><span className="kicker">FROM MAYBE TO MOMENTUM</span><h2>Make the next move<br /><em>with a reason.</em></h2></div><p className="section-intro">A simple loop that puts the people who matter in the middle of your decision.</p></div>
+        <div className="steps">{steps.map((step) => <article className="step" key={step.n}><span className="stepno">{step.n}</span><div className="step-arrow">↗</div><h3>{step.title}</h3><p>{step.text}</p></article>)}</div>
+      </section>
+
+      <section id="manifesto" className="manifesto wrap"><span className="kicker">LESS GUESSWORK. MORE SIGNAL.</span><h2>Build for people.<br /><em>Not assumptions.</em></h2><a className="btn primary" href="/signup">Put your idea to the test <span>↗</span></a><div className="manifesto-orbit" /></section>
+
+      <footer className="footer wrap"><a className="brand" href="/">VEZQO<span>.</span></a><span>Ideas deserve evidence.</span><span>© {new Date().getFullYear()} VEZQO</span></footer>
+    </main>
+  );
+}
