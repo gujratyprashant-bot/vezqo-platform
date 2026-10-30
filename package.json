@@ -17,7 +17,8 @@
     "next": "15.5.28",
     "react": "19.1.0",
     "react-dom": "19.1.0",
-    "@opennextjs/cloudflare": "latest"
+    "@opennextjs/cloudflare": "latest",
+    "three": "^0.180.0"
   },
   "devDependencies": {
     "@types/node": "^22.15.30",
@@ -26,6 +27,7 @@
     "eslint": "^9.28.0",
     "eslint-config-next": "15.5.28",
     "typescript": "^5.8.3",
-    "wrangler": "latest"
+    "wrangler": "latest",
+    "@types/three": "^0.180.0"
   }
 }
