@@ -1,51 +1,79 @@
+"use client";
+
+import { useState } from "react";
 import Logo from "./components/logo";
 
 const steps = [
-  { n: "01", title: "Put it out there.", text: "Give your idea a name. Explain what it does. Set the question." },
-  { n: "02", title: "Let people decide.", text: "People choose WANT IT or KILL IT. No polite feedback. Just a clear vote." },
-  { n: "03", title: "See the signal.", text: "Read the split, understand the reaction, and decide what deserves to exist." },
+  { n: "01", title: "Drop the idea", text: "Give the world the one-line version. Make the question impossible to misunderstand.", tag: "THE CONCEPT" },
+  { n: "02", title: "Put it to a vote", text: "People choose WANT IT or KILL IT. No long surveys. No polite maybe.", tag: "THE CROWD" },
+  { n: "03", title: "Read the signal", text: "See the split, study the reactions, and decide what deserves your next move.", tag: "THE VERDICT" },
 ];
 
 export default function Home() {
+  const [pointer, setPointer] = useState({ x: 0, y: 0 });
   return (
-    <main className="vz-page">
-      <div className="vz-topline"><span>INDEPENDENT IDEAS. UNFILTERED OPINIONS.</span><span>THE INTERNET IS THE FOCUS GROUP.</span></div>
-      <nav className="vz-nav">
-        <Logo />
-        <div className="vz-navlinks"><a href="#how">HOW IT WORKS</a><a href="#manifesto">WHY VEZQO</a><a className="vz-nav-cta" href="/login">LOG IN <span>↗</span></a></div>
-      </nav>
+    <main className="vx-page" onMouseMove={(e) => {
+      const r=e.currentTarget.getBoundingClientRect();
+      setPointer({x:(e.clientX-r.left)/r.width-.5,y:(e.clientY-r.top)/r.height-.5});
+    }}>
+      <div className="vx-grain" />
+      <div className="vx-topbar"><span>AN OPEN SIGNAL FOR UNFINISHED IDEAS</span><span className="vx-live"><i/> THE CROWD IS THE FOCUS GROUP</span></div>
+      <nav className="vx-nav"><Logo/><div className="vx-links"><a href="#mechanism">THE MECHANISM</a><a href="#signal">THE SIGNAL</a><a className="vx-login" href="/login">LOG IN <b>↗</b></a></div></nav>
 
-      <section className="vz-hero">
-        <div className="vz-hero-copy">
-          <div className="vz-stamp"><span className="vz-stamp-dot" /> IDEAS DON'T NEED PERMISSION.</div>
-          <h1>MAKE IT.<br/><span>OR KILL IT.</span></h1>
-          <p className="vz-lead">Before you spend months building something nobody asked for, put the idea to a vote. Real people. Two choices. No sugar-coating.</p>
-          <div className="vz-hero-actions"><a className="vz-button" href="/signup">PUT YOUR IDEA UP <span>↗</span></a><a className="vz-text-link" href="#how">SEE HOW IT WORKS ↓</a></div>
-          <div className="vz-note"><span>01</span> A PUBLIC REALITY CHECK FOR YOUR NEXT BIG IDEA.</div>
+      <section className="vx-hero">
+        <div className="vx-copy">
+          <div className="vx-eyebrow"><span>V / 001</span><i/> VALIDATE BEFORE REALITY GETS EXPENSIVE</div>
+          <h1>YOUR IDEA.<br/><span>UNDER</span><br/><em>PRESSURE.</em></h1>
+          <p className="vx-intro">The internet has an opinion. Put your next big idea in front of real people and find out what survives.</p>
+          <div className="vx-actions"><a className="vx-primary" href="/signup">SUBMIT YOUR IDEA <b>↗</b></a><a className="vx-secondary" href="#mechanism">EXPLORE THE SYSTEM <span>↓</span></a></div>
+          <div className="vx-proof"><span className="vx-proof-line"/> NOT ANOTHER WAITLIST. A REALITY CHECK.</div>
         </div>
-        <div className="vz-stage" aria-label="Illustration of the VEZQO two-choice voting concept">
-          <div className="vz-stage-index">THE PEOPLE HAVE THE FLOOR <b>● LIVE CONCEPT</b></div>
-          <div className="vz-ticket vz-ticket-back"><span>YOUR IDEA</span><strong>THE NEXT<br/>BIG THING?</strong><small>DON'T TAKE OUR WORD FOR IT.</small></div>
-          <div className="vz-vote-board">
-            <div className="vz-board-top"><span>PUBLIC VERDICT / 001</span><span>VZQO®</span></div>
-            <div className="vz-board-question">WOULD YOU<br/>USE THIS?</div>
-            <div className="vz-choice vz-want"><strong>WANT IT</strong><span>↗</span></div>
-            <div className="vz-choice vz-kill"><strong>KILL IT</strong><span>↘</span></div>
-            <div className="vz-board-foot"><span>NO MAYBES.</span><span>JUST A SIGNAL.</span></div>
+
+        <div className="vx-art" style={{"--mx":pointer.x,"--my":pointer.y} as React.CSSProperties}>
+          <div className="vx-art-grid"/>
+          <div className="vx-art-index"><span>OBJECT / 001</span><span>VEZQO LABS <b>●</b></span></div>
+          <div className="vx-orbit vx-orbit-one"/><div className="vx-orbit vx-orbit-two"/><div className="vx-orbit vx-orbit-three"/>
+          <div className="vx-chrome-shadow"/>
+          <div className="vx-monolith">
+            <svg viewBox="0 0 360 420" className="vx-sculpture" aria-label="Chrome VEZQO V sculpture">
+              <defs>
+                <linearGradient id="chromeFace" x1="0" y1="0" x2="1" y2="1"><stop stopColor="#fff"/><stop offset=".16" stopColor="#75869b"/><stop offset=".31" stopColor="#f7fbff"/><stop offset=".48" stopColor="#8799ad"/><stop offset=".66" stopColor="#fff"/><stop offset=".82" stopColor="#586b82"/><stop offset="1" stopColor="#e9f3ff"/></linearGradient>
+                <linearGradient id="chromeSide" x1="0" y1="0" x2="1" y2="0"><stop stopColor="#273444"/><stop offset=".5" stopColor="#b8c9db"/><stop offset="1" stopColor="#182330"/></linearGradient>
+                <filter id="chromeGlow"><feGaussianBlur stdDeviation="9"/></filter>
+              </defs>
+              <path d="M72 72 146 72 190 270 236 72 310 72 220 354 160 354Z" fill="#b8d5f4" opacity=".22" filter="url(#chromeGlow)"/>
+              <path d="M53 58 127 58 181 257 232 58 307 58 212 355 151 355Z" fill="url(#chromeSide)" stroke="#f5faff" strokeOpacity=".65" strokeWidth="2"/>
+              <path d="M53 58 127 58 181 257 232 58 307 58 212 355 151 355Z" fill="url(#chromeFace)" opacity=".95"/>
+              <path d="M53 58 127 58 181 257 232 58 307 58 212 355 151 355Z" fill="none" stroke="#fff" strokeWidth="2.5"/>
+              <path d="M75 80 112 80 181 305 252 80 285 80 205 333 165 333Z" fill="none" stroke="#fff" strokeOpacity=".45" strokeWidth="2"/>
+              <path d="M127 58 181 257 232 58" fill="none" stroke="#fff" strokeOpacity=".8" strokeWidth="4"/>
+              <path d="M160 355 212 355 307 58 281 58 198 316Z" fill="#111e2c" opacity=".18"/>
+            </svg>
+            <div className="vx-sculpture-caption">V / VEZQO</div>
           </div>
-          <div className="vz-side-note">HONEST<br/>BY DESIGN.</div>
-          <div className="vz-stage-number">V / 01</div>
+          <div className="vx-float vx-float-top"><span>LIVE VERDICT</span><strong>THE NEXT<br/>BIG THING?</strong><small>THE CROWD DECIDES.</small></div>
+          <div className="vx-float vx-float-bottom"><div className="vx-vote-head"><span>PUBLIC SIGNAL</span><span>01—02</span></div><div className="vx-vote-row"><b>WANT IT</b><i/><strong>72</strong></div><div className="vx-vote-row vx-kill"><b>KILL IT</b><i/><strong>28</strong></div><div className="vx-vote-foot">A HYPOTHETICAL PREVIEW / NOT LIVE DATA</div></div>
+          <div className="vx-art-coordinate">26°N / IDEA IN MOTION</div>
+          <div className="vx-art-cross vx-cross-a">+</div><div className="vx-art-cross vx-cross-b">+</div>
         </div>
-        <div className="vz-marquee" aria-hidden="true"><div>LESS GUESSING <b>✳</b> MORE KNOWING <b>✳</b> LESS GUESSING <b>✳</b> MORE KNOWING <b>✳</b></div></div>
+        <div className="vx-hero-bottom"><span>01 / THINK</span><span>02 / TEST</span><span>03 / DECIDE</span><span>SCROLL TO DISCOVER ↓</span></div>
       </section>
 
-      <section id="how" className="vz-how">
-        <div className="vz-section-head"><div><span className="vz-overline">THE PROCESS / NO FLUFF</span><h2>Three steps.<br/><i>One clear signal.</i></h2></div><p>Good ideas deserve a fair shot. Bad assumptions deserve to be challenged early.</p></div>
-        <div className="vz-steps">{steps.map((step) => <article className="vz-step" key={step.n}><span className="vz-step-no">{step.n}</span><span className="vz-step-arrow">↗</span><h3>{step.title}</h3><p>{step.text}</p></article>)}</div>
+      <div className="vx-ticker"><div>LESS GUESSING <b>✳</b> MORE KNOWING <b>✳</b> PUT IT TO THE PEOPLE <b>✳</b> LESS GUESSING <b>✳</b> MORE KNOWING <b>✳</b> PUT IT TO THE PEOPLE <b>✳</b></div></div>
+
+      <section id="mechanism" className="vx-mechanism">
+        <div className="vx-section-label"><span>THE MECHANISM</span><span>02 — HOW IT WORKS</span></div>
+        <div className="vx-section-title"><h2>NO GUESSES.<br/><i>JUST SIGNAL.</i></h2><p>Three moves between “I have an idea” and “I know what people think.”</p></div>
+        <div className="vx-steps">{steps.map((s,i)=><article className="vx-step" key={s.n}><div className="vx-step-top"><span>{s.n} / {s.tag}</span><b>↗</b></div><div className={"vx-step-art vx-step-art-"+i}><div className="vx-step-glyph">{i===0?"✳":i===1?"↗":"◉"}</div><div className="vx-step-orbit"/></div><h3>{s.title}</h3><p>{s.text}</p></article>)}</div>
       </section>
 
-      <section id="manifesto" className="vz-manifesto"><div className="vz-manifesto-left"><span className="vz-overline">A SMALL IDEA WITH A BIG QUESTION</span><h2>Would anyone<br/>actually <i>want it?</i></h2></div><div className="vz-manifesto-right"><div className="vz-big-mark">V.</div><p>Stop building in a bubble. Put your thinking in front of people who don't owe you a compliment.</p><a className="vz-button vz-button-dark" href="/signup">LET THE PEOPLE DECIDE <span>↗</span></a></div></section>
-      <footer className="vz-footer"><Logo compact/><span>IDEAS DESERVE EVIDENCE.</span><span>© {new Date().getFullYear()} VEZQO</span></footer>
+      <section id="signal" className="vx-signal">
+        <div className="vx-signal-visual"><div className="vx-signal-ring"/><div className="vx-signal-core">V<span>.</span></div><div className="vx-signal-chip vx-chip-a">HONEST BY DESIGN</div><div className="vx-signal-chip vx-chip-b">NO MAYBES</div></div>
+        <div className="vx-signal-copy"><div className="vx-eyebrow vx-eyebrow-light"><span>03 / THE POINT</span><i/> BUILT FOR THE MOMENT BEFORE YOU BUILD</div><h2>THE WORLD<br/>DOESN'T OWE<br/><em>YOU A YES.</em></h2><p>And that's exactly why you should ask. VEZQO gives ideas a place to meet unfiltered public opinion—before time, money, and momentum are on the line.</p><a className="vx-primary vx-primary-light" href="/signup">PUT YOUR IDEA UP <b>↗</b></a></div>
+      </section>
+
+      <section className="vx-final"><div className="vx-final-kicker">YOUR MOVE / 004</div><h2>MAKE THE IDEA.<br/><span>FACE THE CROWD.</span></h2><a href="/signup" className="vx-final-button">LET THEM DECIDE <b>↗</b></a><div className="vx-final-orb"/></section>
+      <footer className="vx-footer"><Logo compact/><span>IDEAS DESERVE EVIDENCE.</span><span>© {new Date().getFullYear()} VEZQO</span></footer>
     </main>
   );
 }
