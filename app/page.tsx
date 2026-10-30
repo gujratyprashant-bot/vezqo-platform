@@ -41,9 +41,14 @@ export default function Home() {
   return (
     <main className="vx-page" onMouseMove={(e) => {
       const r=e.currentTarget.getBoundingClientRect();
-      setPointer({x:(e.clientX-r.left)/r.width-.5,y:(e.clientY-r.top)/r.height-.5});
+      const x=(e.clientX-r.left)/r.width-.5, y=(e.clientY-r.top)/r.height-.5;
+      setPointer({x,y});
+      e.currentTarget.style.setProperty("--vx-pointer-x", `${e.clientX}px`);
+      e.currentTarget.style.setProperty("--vx-pointer-y", `${e.clientY}px`);
     }}>
       <div className="vx-scroll-meter" aria-hidden="true"><span /></div>
+      <div className="vx-motion-film" aria-hidden="true"><i/><i/><i/><span/></div>
+      <div className="vx-pointer-light" aria-hidden="true" />
       <div className="vx-grain" />
       <div className="vx-topbar"><span>AN OPEN SIGNAL FOR UNFINISHED IDEAS</span><span className="vx-live"><i/> THE CROWD IS THE FOCUS GROUP</span></div>
       <nav className="vx-nav"><Logo/><div className="vx-links"><a href="#mechanism">THE MECHANISM</a><a href="#signal">THE SIGNAL</a><a className="vx-login" href="/login">LOG IN <b>↗</b></a></div></nav>
