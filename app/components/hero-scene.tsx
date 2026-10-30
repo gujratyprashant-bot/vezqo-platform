@@ -26,14 +26,16 @@ export default function HeroScene() {
         <span className="orb-label">IDEA<br />IN MOTION</span>
       </div>
       <div className="float-card vote-card">
-        <span className="float-label">LIVE SIGNAL</span>
-        <strong>WANT IT <b>↗</b></strong>
+        <span className="float-label">THE CROWD IS DECIDING</span>
+        <div className="vote-choice want"><strong>WANT IT</strong><span>↗</span></div>
         <div className="vote-track"><i /></div>
-        <small>People are responding</small>
+        <div className="vote-choice kill"><strong>KILL IT</strong><span>↘</span></div>
+        <div className="vote-track kill-track"><i /></div>
+        <small>Every vote moves the signal</small>
       </div>
       <div className="float-card insight-card">
         <span className="insight-dot" />
-        <div><strong>Signal detected</strong><small>Your idea is getting noticed</small></div>
+        <div><strong>Signal detected</strong><small>Real people. Honest reactions.</small></div>
       </div>
       <div className="scene-caption"><span /> REAL PEOPLE. REAL SIGNAL.</div>
     </div>
