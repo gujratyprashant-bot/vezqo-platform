@@ -21,71 +21,96 @@ export default function ThreeSculpture() {
       const scene = new THREE.Scene();
       const camera = new THREE.PerspectiveCamera(34, 1, 0.1, 100);
       camera.position.set(0, 0, 7.2);
-
       renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true, powerPreference: "high-performance" });
-      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.7));
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
       renderer.outputColorSpace = THREE.SRGBColorSpace;
       renderer.toneMapping = THREE.ACESFilmicToneMapping;
-      renderer.toneMappingExposure = 1.25;
+      renderer.toneMappingExposure = 1.3;
       root.appendChild(renderer.domElement);
 
       const pmrem = new THREE.PMREMGenerator(renderer);
-      scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
+      const environment = pmrem.fromScene(new RoomEnvironment(), 0.04);
+      scene.environment = environment.texture;
       pmrem.dispose();
 
-      scene.add(new THREE.AmbientLight(0xffffff, 0.65));
-      const key = new THREE.DirectionalLight(0xffffff, 3.4);
+      scene.add(new THREE.AmbientLight(0xffffff, 0.55));
+      const key = new THREE.DirectionalLight(0xffffff, 4.2);
       key.position.set(4, 5, 6);
       scene.add(key);
-      const rim = new THREE.PointLight(0x8ecbff, 34, 18);
+      const rim = new THREE.PointLight(0x8ecbff, 42, 18);
       rim.position.set(-4, 1, -2);
       scene.add(rim);
-      const warm = new THREE.PointLight(0xff694c, 18, 14);
+      const warm = new THREE.PointLight(0xff694c, 24, 14);
       warm.position.set(3, -3, 2);
       scene.add(warm);
 
       const group = new THREE.Group();
       scene.add(group);
       const chrome = new THREE.MeshPhysicalMaterial({
-        color: 0xe6edf5, metalness: 1, roughness: 0.13,
-        clearcoat: 1, clearcoatRoughness: 0.08, envMapIntensity: 2.2
+        color: 0xe8f0f8, metalness: 1, roughness: 0.11,
+        clearcoat: 1, clearcoatRoughness: 0.06, envMapIntensity: 2.5
       });
-      const darkChrome = new THREE.MeshPhysicalMaterial({
-        color: 0x243342, metalness: 0.96, roughness: 0.2,
-        clearcoat: 1, envMapIntensity: 1.7
+      const shadowChrome = new THREE.MeshPhysicalMaterial({
+        color: 0x243342, metalness: 0.98, roughness: 0.19,
+        clearcoat: 1, envMapIntensity: 1.8
       });
 
-      const knot = new THREE.Mesh(new THREE.TorusKnotGeometry(1.12, 0.31, 220, 32, 2, 5), chrome);
-      knot.scale.set(1.03, 1.03, 1.03);
-      group.add(knot);
+      // Custom extruded V mark: the sculpture is the VEZQO identity, not a stock primitive.
+      const mark = new THREE.Shape();
+      mark.moveTo(-1.48, 1.22);
+      mark.lineTo(-0.72, 1.22);
+      mark.lineTo(0, -0.48);
+      mark.lineTo(0.72, 1.22);
+      mark.lineTo(1.48, 1.22);
+      mark.lineTo(0.39, -1.28);
+      mark.lineTo(-0.39, -1.28);
+      mark.closePath();
 
-      const inner = new THREE.Mesh(new THREE.IcosahedronGeometry(0.54, 2), darkChrome);
-      inner.scale.setScalar(0.8);
-      group.add(inner);
+      const geometry = new THREE.ExtrudeGeometry(mark, {
+        depth: 0.42, bevelEnabled: true, bevelSegments: 5,
+        steps: 1, bevelSize: 0.075, bevelThickness: 0.075, curveSegments: 12
+      });
+      geometry.center();
+      const emblem = new THREE.Mesh(geometry, chrome);
+      group.add(emblem);
 
-      const orbitMaterial = new THREE.MeshBasicMaterial({ color: 0xa8c9e7, transparent: true, opacity: 0.58 });
-      const orbitA = new THREE.Mesh(new THREE.TorusGeometry(1.9, 0.008, 8, 180), orbitMaterial);
+      const backGeometry = geometry.clone();
+      const back = new THREE.Mesh(backGeometry, shadowChrome);
+      back.scale.set(1.035, 1.035, 0.78);
+      back.position.z = -0.28;
+      group.add(back);
+
+      const orbitA = new THREE.Mesh(
+        new THREE.TorusGeometry(1.95, 0.009, 8, 200),
+        new THREE.MeshBasicMaterial({ color: 0xa8c9e7, transparent: true, opacity: 0.68 })
+      );
       orbitA.rotation.set(1.05, 0.3, -0.35);
       group.add(orbitA);
-      const orbitB = new THREE.Mesh(new THREE.TorusGeometry(2.15, 0.006, 8, 180), new THREE.MeshBasicMaterial({ color: 0xf16a4c, transparent: true, opacity: 0.55 }));
+      const orbitB = new THREE.Mesh(
+        new THREE.TorusGeometry(2.18, 0.007, 8, 200),
+        new THREE.MeshBasicMaterial({ color: 0xf16a4c, transparent: true, opacity: 0.7 })
+      );
       orbitB.rotation.set(0.4, 1.15, 0.7);
       group.add(orbitB);
 
-      const particles = new THREE.Group();
+      const satellites = new THREE.Group();
       const particleGeo = new THREE.SphereGeometry(0.018, 8, 8);
-      for (let i = 0; i < 44; i++) {
-        const a = (i / 44) * Math.PI * 2;
-        const p = new THREE.Mesh(particleGeo, new THREE.MeshBasicMaterial({ color: i % 4 === 0 ? 0xf16a4c : 0xd7e9f8 }));
-        p.position.set(Math.cos(a) * (2.35 + (i % 3) * 0.12), Math.sin(a * 2) * 0.45, Math.sin(a) * 1.6);
-        particles.add(p);
+      for (let i = 0; i < 52; i++) {
+        const a = (i / 52) * Math.PI * 2;
+        const particle = new THREE.Mesh(
+          particleGeo,
+          new THREE.MeshBasicMaterial({ color: i % 5 === 0 ? 0xf16a4c : 0xd7e9f8 })
+        );
+        particle.position.set(Math.cos(a) * (2.35 + (i % 3) * 0.12), Math.sin(a * 2) * 0.5, Math.sin(a) * 1.55);
+        satellites.add(particle);
       }
-      group.add(particles);
+      group.add(satellites);
 
       const pointer = { x: 0, y: 0, tx: 0, ty: 0 };
       const onMove = (event: PointerEvent) => {
         const rect = root.getBoundingClientRect();
-        pointer.tx = ((event.clientX - rect.left) / rect.width - 0.5) * 0.8;
-        pointer.ty = ((event.clientY - rect.top) / rect.height - 0.5) * 0.65;
+        pointer.tx = ((event.clientX - rect.left) / rect.width - 0.5) * 0.72;
+        pointer.ty = ((event.clientY - rect.top) / rect.height - 0.5) * 0.55;
       };
       root.addEventListener("pointermove", onMove);
 
@@ -108,11 +133,11 @@ export default function ThreeSculpture() {
         const t = clock.getElapsedTime();
         pointer.x += (pointer.tx - pointer.x) * 0.045;
         pointer.y += (pointer.ty - pointer.y) * 0.045;
-        group.rotation.y = (reduced ? 0 : t * 0.16) + pointer.x;
-        group.rotation.x = (reduced ? 0 : Math.sin(t * 0.32) * 0.12) + pointer.y;
-        knot.rotation.z = reduced ? 0 : t * 0.12;
-        inner.rotation.set(t * 0.12, -t * 0.18, t * 0.09);
-        group.position.y = reduced ? 0 : Math.sin(t * 0.65) * 0.08;
+        group.rotation.y = (reduced ? 0 : Math.sin(t * 0.22) * 0.18) + pointer.x;
+        group.rotation.x = (reduced ? 0 : Math.sin(t * 0.32) * 0.09) + pointer.y;
+        group.rotation.z = reduced ? 0 : Math.sin(t * 0.18) * 0.035;
+        satellites.rotation.y = reduced ? 0 : -t * 0.07;
+        group.position.y = reduced ? 0 : Math.sin(t * 0.65) * 0.07;
         renderer.render(scene, camera);
       };
       animate();
@@ -128,6 +153,7 @@ export default function ThreeSculpture() {
             materials.forEach((material) => material.dispose());
           }
         });
+        environment.dispose();
         renderer?.dispose();
         renderer?.domElement.remove();
       };
@@ -137,5 +163,5 @@ export default function ThreeSculpture() {
     return () => { active = false; cleanup(); };
   }, []);
 
-  return <div ref={host} className="vx-three-host" aria-label="Interactive real-time chrome 3D sculpture" role="img" />;
+  return <div ref={host} className="vx-three-host" aria-label="Interactive real-time chrome VEZQO emblem" role="img" />;
 }
