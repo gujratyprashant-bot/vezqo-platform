@@ -41,7 +41,7 @@ export default function ThreeSculpture() {
       const face = new T.Mesh(new T.BoxGeometry(2.03,2.65,.055),titanium); face.position.z=.245; rig.add(face);
       const screen = new T.Mesh(new T.BoxGeometry(1.78,2.38,.07),glass); screen.position.set(0,.02,.3); rig.add(screen);
       const display = new T.Group(); display.position.set(0,.02,.35); rig.add(display);
-      const bar = (w,h,y,mat) => { const m=new T.Mesh(new T.BoxGeometry(w,h,.025),mat); m.position.y=y; display.add(m); return m; };
+      const bar = (w:number,h:number,y:number,mat:import("three").Material) => { const m=new T.Mesh(new T.BoxGeometry(w,h,.025),mat); m.position.y=y; display.add(m); return m; };
       bar(1.22,.025,.82,titanium); bar(.62,.055,.57,signal); bar(1.22,.018,.32,titanium);
       bar(.92,.018,-.15,titanium); bar(.72,.018,-.28,titanium);
       const meter = new T.Mesh(new T.TorusGeometry(.32,.035,12,90),signal); meter.position.set(0,-.78,.03); display.add(meter);
