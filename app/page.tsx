@@ -13,6 +13,7 @@ const steps = [
 export default function Home() {
   const [pointer, setPointer] = useState({ x: 0, y: 0 });
   const [vote, setVote] = useState<"want" | "kill" | null>(null);
+  const [pressure, setPressure] = useState(68);
   useEffect(() => {
     const updateScroll = () => {
       const max = document.documentElement.scrollHeight - window.innerHeight;
@@ -140,6 +141,24 @@ export default function Home() {
       </section>
 
       <div className="vx-ticker"><div>LESS GUESSING <b>✳</b> MORE KNOWING <b>✳</b> PUT IT TO THE PEOPLE <b>✳</b> LESS GUESSING <b>✳</b> MORE KNOWING <b>✳</b> PUT IT TO THE PEOPLE <b>✳</b></div></div>
+
+      <section className="vx-reactor vx-reveal" aria-label="Interactive idea signal experiment">
+        <div className="vx-reactor-copy">
+          <span className="vx-reactor-kicker">INTERACTIVE EXPERIMENT / 001</span>
+          <h2>TURN THE<br/><em>PRESSURE UP.</em></h2>
+          <p>Ideas change when they meet the real world. Move the control and watch the signal chamber react.</p>
+          <label className="vx-pressure-label" htmlFor="vx-pressure">SIGNAL INTENSITY <strong>{pressure}%</strong></label>
+          <input id="vx-pressure" className="vx-pressure-slider" type="range" min="0" max="100" value={pressure} onChange={(e) => setPressure(Number(e.target.value))} style={{"--pressure": pressure + "%"} as React.CSSProperties}/>
+          <div className="vx-pressure-scale"><span>RAW THOUGHT</span><span>PUBLIC MOMENTUM</span></div>
+        </div>
+        <div className="vx-reactor-visual" style={{"--pressure": pressure + "%"} as React.CSSProperties}>
+          <div className="vx-reactor-grid"/>
+          <div className="vx-reactor-orbit vx-reactor-orbit-a"/><div className="vx-reactor-orbit vx-reactor-orbit-b"/><div className="vx-reactor-orbit vx-reactor-orbit-c"/>
+          <div className="vx-reactor-core"><div className="vx-reactor-core-inner"><span>V</span><small>IDEA / SIGNAL</small></div></div>
+          <div className="vx-reactor-readout"><span>LIVE FIELD</span><strong>{pressure < 34 ? "FORMING" : pressure < 72 ? "BUILDING" : "AMPLIFIED"}</strong><i/></div>
+          <div className="vx-reactor-coordinate">VQ—{String(pressure).padStart(3,"0")} / FIELD TEST</div>
+        </div>
+      </section>
 
       <section className="vx-morph-section vx-reveal">
         <div className="vx-morph-copy"><span className="vx-morph-kicker">FROM THOUGHT TO SIGNAL / 002</span><h2>AN IDEA IS<br/><em>JUST POTENTIAL.</em></h2><p>Give it a shape. Put it in the open. Let real people turn a hunch into a signal you can actually use.</p><a href="/signup" className="vx-morph-link">TEST YOUR IDEA <b>↗</b></a></div>
