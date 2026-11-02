@@ -12,12 +12,23 @@ export default function HeroScene() {
     let observer: ResizeObserver | undefined;
     let onMove = (_event: PointerEvent) => {};
     let onLeave = () => {};
+    let disposeScene = () => {};
 
     const boot = async () => {
       const T = await import("three");
       if (!alive || !host.current) return;
       const root = host.current;
       const scene = new T.Scene();
+      disposeScene = () => {
+        scene.traverse((object) => {
+          const mesh = object as T.Mesh;
+          if (mesh.geometry) mesh.geometry.dispose();
+          if (mesh.material) {
+            const materials = Array.isArray(mesh.material) ? mesh.material : [mesh.material];
+            materials.forEach((material) => material.dispose());
+          }
+        });
+      };
       const camera = new T.PerspectiveCamera(34, 1, 0.1, 80);
       camera.position.set(0, 0.25, 8.7);
 
@@ -218,6 +229,7 @@ export default function HeroScene() {
         host.current.removeEventListener("pointermove", onMove);
         host.current.removeEventListener("pointerleave", onLeave);
       }
+      disposeScene();
       if (renderer) {
         renderer.dispose();
         renderer.domElement.remove();
