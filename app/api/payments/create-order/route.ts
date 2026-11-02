@@ -1,7 +1,6 @@
 import { randomUUID } from "node:crypto";
 import { NextResponse } from "next/server";
 import { createClient as createUserClient } from "@/lib/supabase/server";
-import { createAdminClient } from "@/lib/supabase/admin";
 
 export const runtime = "nodejs";
 const cashfreeBase = () => process.env.CASHFREE_ENV === "production"
@@ -25,10 +24,9 @@ export async function POST(request: Request) {
     const phone = String(user.user_metadata?.phone ?? "").replace(/\D/g, "");
     if (!/^\d{10}$/.test(phone)) return NextResponse.json({ error: "Add a valid 10-digit mobile number to your account before checkout." }, { status: 400 });
 
-    const admin = createAdminClient();
     const [{ data: test, error: testError }, { data: pack, error: packError }] = await Promise.all([
-      admin.from("tests").select("id,creator_id,title,status").eq("id", testId).eq("creator_id", user.id).maybeSingle(),
-      admin.from("packages").select("id,code,name,responses,price_paise,currency,active").eq("code", packageCode).eq("active", true).maybeSingle()
+      userClient.from("tests").select("id,creator_id,title,status").eq("id", testId).eq("creator_id", user.id).maybeSingle(),
+      userClient.from("packages").select("id,code,name,responses,price_paise,currency,active").eq("code", packageCode).eq("active", true).maybeSingle()
     ]);
     if (testError || !test || test.status !== "draft") return NextResponse.json({ error: "Draft test not found for this account." }, { status: 404 });
     if (packError || !pack) return NextResponse.json({ error: "Selected package is unavailable." }, { status: 404 });
@@ -41,7 +39,7 @@ export async function POST(request: Request) {
     if (!appUrl || !appUrl.startsWith("https://") && process.env.CASHFREE_ENV === "production") {
       return NextResponse.json({ error: "Set the public HTTPS application URL before enabling production checkout." }, { status: 503 });
     }
-    const { error: insertError } = await admin.from("orders").insert({
+    const { error: insertError } = await userClient.from("orders").insert({
       id: internalId, test_id: test.id, creator_id: user.id, package_id: pack.id,
       amount_paise: pack.price_paise, currency: "INR", cashfree_order_id: cashfreeOrderId,
       payment_provider: "cashfree", status: "created"
@@ -70,7 +68,6 @@ export async function POST(request: Request) {
     });
     const payload = await response.json();
     if (!response.ok || !payload.payment_session_id) {
-      await admin.from("orders").update({ status: "failed" }).eq("id", internalId);
       return NextResponse.json({ error: "Cashfree could not initialize checkout. Please retry." }, { status: 502 });
     }
     return NextResponse.json({ orderId: cashfreeOrderId, paymentSessionId: payload.payment_session_id, environment: process.env.CASHFREE_ENV === "production" ? "production" : "sandbox" });
