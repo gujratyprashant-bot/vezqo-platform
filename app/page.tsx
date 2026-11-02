@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Logo from "./components/logo";
 import HeroScene from "./components/hero-scene";
 
@@ -19,6 +19,24 @@ const concepts = [
 export default function Home() {
   const [choice, setChoice] = useState<"want" | "kill" | "">("");
   const [activeStep, setActiveStep] = useState(0);
+
+  useEffect(() => {
+    const targets = document.querySelectorAll<HTMLElement>("[data-reveal]");
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      targets.forEach((node) => node.classList.add("is-visible"));
+      return;
+    }
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("is-visible");
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12 });
+    targets.forEach((node) => observer.observe(node));
+    return () => observer.disconnect();
+  }, []);
 
   return (
     <main className="vz-shell">
@@ -78,7 +96,7 @@ export default function Home() {
         <div>IDEAS DESERVE A REAL AUDIENCE <b>✳</b> LESS GUESSING. MORE SIGNAL. <b>✳</b> WANT IT OR KILL IT. <b>✳</b> IDEAS DESERVE A REAL AUDIENCE <b>✳</b></div>
       </section>
 
-      <section className="vz-intro vz-section">
+      <section className="vz-intro vz-section" data-reveal>
         <div className="vz-section-label"><span>01 / THE PROBLEM</span><span>SUPPORT ISN'T THE SAME AS DEMAND</span></div>
         <div className="vz-intro-grid">
           <h2>YOUR IDEA<br />NEEDS MORE<br /><em>THAN AN ECHO.</em></h2>
@@ -91,7 +109,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="vz-vote-section vz-section" id="live-vote">
+      <section className="vz-vote-section vz-section" data-reveal id="live-vote">
         <div className="vz-section-label"><span>02 / FEEL THE DECISION</span><span>INTERACTIVE PREVIEW / NOT A REAL VOTE</span></div>
         <div className="vz-vote-layout">
           <div className="vz-vote-heading">
@@ -125,7 +143,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="vz-how vz-section" id="how-it-works">
+      <section className="vz-how vz-section" data-reveal id="how-it-works">
         <div className="vz-section-label"><span>03 / HOW VEZQO WORKS</span><span>FROM FIRST THOUGHT TO CLEARER SIGNAL</span></div>
         <div className="vz-how-heading"><h2>IDEAS IN MOTION.<br /><em>DECISIONS WITH DIRECTION.</em></h2><p>Three simple steps. One better-informed next move.</p></div>
         <div className="vz-how-grid">
@@ -149,7 +167,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="vz-discover vz-section" id="discover">
+      <section className="vz-discover vz-section" data-reveal id="discover">
         <div className="vz-section-label"><span>04 / IDEAS WORTH TESTING</span><span>CONCEPTS ARE EXAMPLES, NOT LIVE LISTINGS</span></div>
         <div className="vz-discover-heading"><h2>WHAT COULD<br />THE WORLD <em>WANT?</em></h2><p>From products to digital experiences, every big thing starts as a question.</p></div>
         <div className="vz-concept-grid">
@@ -166,7 +184,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="vz-final">
+      <section className="vz-final" data-reveal>
         <div className="vz-final-orbit orbit-a" /><div className="vz-final-orbit orbit-b" />
         <div className="vz-final-label"><span>THE NEXT MOVE STARTS HERE</span><span>VEZQO / OPEN CALL</span></div>
         <h2>DON'T BUILD<br />ON A <em>GUESS.</em></h2>
