@@ -21,7 +21,7 @@ export default function HeroScene() {
       const scene = new T.Scene();
       disposeScene = () => {
         scene.traverse((object) => {
-          const mesh = object as T.Mesh;
+          const mesh = object as import("three").Mesh;
           if (mesh.geometry) mesh.geometry.dispose();
           if (mesh.material) {
             const materials = Array.isArray(mesh.material) ? mesh.material : [mesh.material];
