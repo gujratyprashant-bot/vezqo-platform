@@ -26,6 +26,27 @@ export default function ThreeSculpture() {
       const edge = new T.PointLight(0x8ca9ff, 35, 12); edge.position.set(-4,1,2); scene.add(edge);
       const warm = new T.PointLight(0xff633f, 24, 10); warm.position.set(3,-3,-1); scene.add(warm);
       const rig = new T.Group(); scene.add(rig);
+
+      // VEZQO signal orbit: distinct response paths around the concept device.
+      const signalOrbit = new T.Group(); scene.add(signalOrbit);
+      const orbitMat = new T.MeshBasicMaterial({ color: 0x8ea9d2, transparent: true, opacity: .42 });
+      const wantMat = new T.MeshStandardMaterial({ color: 0xc9e0ff, emissive: 0x7aaeff, emissiveIntensity: 2.1, metalness: .45, roughness: .2 });
+      const rethinkMat = new T.MeshStandardMaterial({ color: 0xff9b7f, emissive: 0xff5938, emissiveIntensity: 1.5, metalness: .35, roughness: .25 });
+      const orbitA = new T.Mesh(new T.TorusGeometry(2.02, .009, 8, 180), orbitMat);
+      orbitA.rotation.set(1.18, .12, -.2); signalOrbit.add(orbitA);
+      const orbitB = new T.Mesh(new T.TorusGeometry(2.22, .006, 8, 180), orbitMat.clone());
+      orbitB.rotation.set(1.36, -.5, .34); signalOrbit.add(orbitB);
+      const orbitNodes: import("three").Mesh[] = [];
+      const addSignalNode = (x:number,y:number,z:number,material:import("three").Material,size=.075) => {
+        const mesh = new T.Mesh(new T.SphereGeometry(size, 20, 16), material);
+        mesh.position.set(x,y,z); signalOrbit.add(mesh); orbitNodes.push(mesh); return mesh;
+      };
+      addSignalNode(1.58,.78,.68,wantMat,.09);
+      addSignalNode(-1.62,-.62,.54,rethinkMat,.075);
+      addSignalNode(-.9,1.58,-.25,wantMat,.045);
+      addSignalNode(1.05,-1.55,-.2,rethinkMat,.045);
+      const signalHalo = new T.Mesh(new T.TorusGeometry(.17,.012,8,48), wantMat);
+      signalHalo.position.set(1.58,.78,.68); signalHalo.rotation.x=.9; signalOrbit.add(signalHalo);
       const graphite = new T.MeshPhysicalMaterial({color:0x202630,metalness:.86,roughness:.24,clearcoat:1});
       const titanium = new T.MeshPhysicalMaterial({color:0xb9c5d4,metalness:.96,roughness:.18});
       const glass = new T.MeshPhysicalMaterial({color:0x101c2c,metalness:.45,roughness:.08,clearcoat:1,emissive:0x10284a,emissiveIntensity:.55});
@@ -59,7 +80,8 @@ export default function ThreeSculpture() {
       const move=(e:PointerEvent)=>{const r=el.getBoundingClientRect();pointer.tx=((e.clientX-r.left)/r.width-.5)*.32;pointer.ty=((e.clientY-r.top)/r.height-.5)*.24;};
       el.addEventListener("pointermove",move);
       const clock=new T.Clock();
-      const draw=()=>{if(!alive)return;const t=clock.getElapsedTime();pointer.x+=(pointer.tx-pointer.x)*.045;pointer.y+=(pointer.ty-pointer.y)*.045;rig.rotation.y=-.28+Math.sin(t*.32)*.12+pointer.x;rig.rotation.x=-.12+pointer.y+Math.sin(t*.45)*.025;core.scale.setScalar(1+Math.sin(t*2)*.12);renderer?.render(scene,camera);raf=requestAnimationFrame(draw);};
+      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const draw=()=>{if(!alive)return;const t=clock.getElapsedTime();pointer.x+=(pointer.tx-pointer.x)*.045;pointer.y+=(pointer.ty-pointer.y)*.045;rig.rotation.y=-.28+(reduceMotion?0:Math.sin(t*.32)*.12)+pointer.x;rig.rotation.x=-.12+pointer.y+(reduceMotion?0:Math.sin(t*.45)*.025);core.scale.setScalar(1+(reduceMotion?0:Math.sin(t*2)*.12));signalOrbit.rotation.y=reduceMotion?-.18:Math.sin(t*.18)*.22;signalOrbit.rotation.z=reduceMotion?0:Math.sin(t*.24)*.055;orbitNodes.forEach((m,i)=>{const pulse=reduceMotion?1:1+Math.sin(t*1.8+i*1.7)*.13;m.scale.setScalar(pulse);});signalHalo.rotation.z=reduceMotion?0:t*.55;renderer?.render(scene,camera);raf=requestAnimationFrame(draw);};
       draw(); cleanup=()=>el.removeEventListener("pointermove",move);
     })();
     return ()=>{alive=false;cancelAnimationFrame(raf);observer?.disconnect();cleanup();renderer?.dispose();renderer?.domElement.remove();};
