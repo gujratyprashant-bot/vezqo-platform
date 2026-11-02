@@ -1,80 +1,183 @@
 "use client";
-import { useEffect, useState } from "react";
+
+import { useState } from "react";
 import Logo from "./components/logo";
-import ThreeSculpture from "./components/three-sculpture";
+import HeroScene from "./components/hero-scene";
 
 const steps = [
-  { n: "01", title: "Frame the question", body: "Turn your idea into one clear decision. What are you trying to learn?", tag: "DEFINE" },
-  { n: "02", title: "Put it in front of people", body: "Share a concept page and invite people outside your immediate circle to react.", tag: "PUBLISH" },
-  { n: "03", title: "Read the signal", body: "See the balance of WANT IT and KILL IT, then decide what deserves your next move.", tag: "LEARN" },
+  { n: "01", title: "Bring the idea", body: "Describe the product, service or concept you want people to react to.", tag: "CREATE" },
+  { n: "02", title: "Let people decide", body: "Put it in front of an audience and collect a clear WANT IT or KILL IT response.", tag: "VOTE" },
+  { n: "03", title: "Move with evidence", body: "Read the response, understand the signal and choose your next move.", tag: "LEARN" },
 ];
-const examples = [
-  { n: "FIELD NOTE 001", type: "PHYSICAL PRODUCT", title: "The everyday carry, rethought.", desc: "A compact object designed to make daily routines simpler.", cls: "object-one" },
-  { n: "FIELD NOTE 002", type: "DIGITAL SERVICE", title: "A quieter kind of productivity.", desc: "A planning tool that protects focus instead of filling every minute.", cls: "object-two" },
-  { n: "FIELD NOTE 003", type: "URBAN LIVING", title: "Made for the long way home.", desc: "A city essential imagined around comfort and movement.", cls: "object-three" },
+
+const concepts = [
+  { id: "01", type: "CONSUMER TECH", title: "A calmer way to focus.", body: "A compact audio companion designed around deep work.", kind: "audio" },
+  { id: "02", type: "FOOTWEAR", title: "Built for the long way.", body: "A next-generation everyday sneaker concept.", kind: "shoe" },
+  { id: "03", type: "FUTURE LIVING", title: "A smarter daily ritual.", body: "A home object reimagined around a simpler routine.", kind: "home" },
 ];
 
 export default function Home() {
-  const [choice, setChoice] = useState("");
-  const [active, setActive] = useState(0);
-  useEffect(() => {
-    const nodes = document.querySelectorAll("[data-reveal]");
-    const io = new IntersectionObserver(entries => entries.forEach(e => {
-      if (e.isIntersecting) { e.target.classList.add("is-visible"); io.unobserve(e.target); }
-    }), { threshold: .14 });
-    nodes.forEach(n => io.observe(n));
-    return () => io.disconnect();
-  }, []);
-  return <main className="site-shell">
-    <div className="topline"><span>AN OPEN FIELD FOR EARLY IDEAS</span><span>INDEPENDENT THINKING / REAL REACTIONS</span><span>EST. FOR THE CURIOUS ↗</span></div>
-    <header className="site-nav"><Logo/><nav><a href="#method">THE METHOD</a><a href="#preview">LIVE PREVIEW</a><a href="#fieldnotes">FIELD NOTES</a></nav><div className="nav-actions"><a href="/login">LOG IN</a><a className="nav-pill" href="/signup">START A TEST <span>↗</span></a></div></header>
+  const [choice, setChoice] = useState<"want" | "kill" | "">("");
+  const [activeStep, setActiveStep] = useState(0);
 
-    <section className="hero-section">
-      <div className="hero-copy">
-        <div className="eyebrow"><i/> THE SPACE BETWEEN IDEA AND REALITY</div>
-        <h1>MAKE THE<br/>UNKNOWN<br/><em>ANSWER BACK.</em></h1>
-        <p className="hero-intro">An idea is only a beginning. Put yours in front of people, hear the unfiltered reaction, and make your next move with more context.</p>
-        <div className="hero-buttons"><a className="button-primary" href="/signup">PUT AN IDEA TO THE TEST <b>↗</b></a><a className="text-link" href="#method">SEE HOW IT WORKS <span>↓</span></a></div>
-        <div className="hero-index"><span>01 — ASK</span><span>02 — LISTEN</span><span>03 — DECIDE</span></div>
+  return (
+    <main className="vz-shell">
+      <div className="vz-topline">
+        <span>IDEAS IN. REAL SIGNAL OUT.</span>
+        <span>AN OPEN PLATFORM FOR WHAT COMES NEXT <b>●</b></span>
       </div>
-      <div className="hero-visual">
-        <div className="visual-top"><span>VEZQO / SIGNAL STUDY</span><span>NO. 001—A</span></div>
-        <div className="visual-stage"><div className="stage-grid"/><div className="stage-glow"/><div className="stage-object"><ThreeSculpture/></div>
-          <div className="floating-note note-top"><small>THE QUESTION</small><strong>Would this<br/>make life better?</strong><span>OPEN / 001</span></div>
-          <div className="floating-note note-bottom"><span className="live-dot"/> <div><small>THE POINT</small><strong>Listen beyond your circle.</strong></div><b>↗</b></div>
-          <div className="axis-label">FIG. 01 / AN IDEA IN MOTION</div>
+
+      <header className="vz-nav">
+        <Logo />
+        <nav className="vz-navlinks" aria-label="Main navigation">
+          <a href="#how-it-works">HOW IT WORKS</a>
+          <a href="#live-vote">LIVE VOTE</a>
+          <a href="#discover">DISCOVER</a>
+        </nav>
+        <div className="vz-nav-actions">
+          <a className="vz-login" href="/login">LOG IN</a>
+          <a className="vz-nav-cta" href="/signup">LAUNCH AN IDEA <span>↗</span></a>
         </div>
-        <div className="visual-bottom"><span>EARLY SIGNAL, NOT A GUARANTEE.</span><span>SCROLL TO EXPLORE ↓</span></div>
-      </div>
-      <div className="hero-side-label">A BETTER QUESTION CAN CHANGE THE WHOLE DIRECTION</div>
-    </section>
+      </header>
 
-    <div className="ticker"><div>IDEAS NEED DAYLIGHT <b>✳</b> CURIOSITY OVER CERTAINTY <b>✳</b> REAL REACTIONS, NOT EMPTY PRAISE <b>✳</b> IDEAS NEED DAYLIGHT <b>✳</b></div></div>
+      <section className="vz-hero">
+        <div className="vz-hero-copy">
+          <div className="vz-kicker"><i /> THE FUTURE ISN'T BUILT ON GUESSES</div>
+          <h1>DON'T JUST<br />IMAGINE.<br /><em>LET THEM</em><br /><strong>DECIDE.</strong></h1>
+          <p>Put your idea in front of real people. Get a clear signal before you spend your time building the wrong thing.</p>
+          <div className="vz-hero-actions">
+            <a className="vz-button" href="/signup">PUT YOUR IDEA TO THE TEST <span>↗</span></a>
+            <a className="vz-watch" href="#how-it-works"><span>▶</span> SEE HOW VEZQO WORKS</a>
+          </div>
+          <div className="vz-hero-proof">
+            <span><i /> REAL PEOPLE</span><b />
+            <span><i /> HONEST VOTES</span><b />
+            <span><i /> CLEARER DECISIONS</span>
+          </div>
+        </div>
 
-    <section className="manifesto section-pad" id="why" data-reveal>
-      <div className="section-kicker"><span>01 / THE REALITY CHECK</span><span>SUPPORT IS NOT THE SAME AS DEMAND</span></div>
-      <div className="manifesto-layout"><h2>YOUR FRIENDS<br/>LOVE YOU.<br/><em>THE MARKET<br/>DOESN'T KNOW YOU.</em></h2><div className="manifesto-copy"><div className="quote-mark">“</div><p>People close to you want you to win. That encouragement is valuable—but it can make it hard to see how an unfamiliar person will react.</p><p>VEZQO gives an early idea a place to meet a wider audience. Not to predict the future. To ask a better question before you commit to the answer.</p><a href="#method" className="underlined-link">WHY OUTSIDE PERSPECTIVE MATTERS <b>↘</b></a><div className="manifesto-stamp">LESS<br/>GUESSING<br/><strong>MORE<br/>LEARNING.</strong></div></div></div>
-    </section>
+        <div className="vz-hero-art">
+          <div className="vz-art-grid" />
+          <div className="vz-art-glow" />
+          <HeroScene />
+          <div className="vz-float-card vz-card-vote">
+            <small>THE CROWD'S SIGNAL</small>
+            <strong>WANT IT <b>↗</b></strong>
+            <div className="vz-mini-track"><i /></div>
+            <span>OR KILL IT?</span>
+          </div>
+          <div className="vz-float-card vz-card-live">
+            <i /><div><small>VEZQO / LIVE FEEDBACK</small><strong>Every vote counts.</strong></div>
+          </div>
+          <div className="vz-art-caption"><span>FIG. 001</span><span>AN IDEA MEETS ITS AUDIENCE</span></div>
+        </div>
+        <div className="vz-scroll-cue"><span /> SCROLL TO EXPLORE</div>
+      </section>
 
-    <section className="preview-section section-pad" id="preview" data-reveal>
-      <div className="section-kicker"><span>02 / TRY THE FEELING</span><span>INTERACTIVE PREVIEW / LOCAL ONLY</span></div>
-      <div className="preview-layout"><div className="preview-heading"><span className="giant-index">02</span><h2>WOULD YOU<br/><em>BACK THIS?</em></h2><p>Try a fictional concept. Your choice stays in this browser preview—it is not sent, counted, or shown as a real vote.</p><div className="preview-disclaimer"><i/> DEMO MODE / NO DATA SUBMITTED</div></div>
-        <article className="concept-card"><div className="concept-card-head"><span>VEZQO / CONCEPT FILE</span><span>001—PX</span></div><div className="concept-art"><div className="product-shadow"/><div className="product-device"><div className="device-glass"/><div className="device-button"/><div className="device-light"/></div><div className="art-coordinates">24° 08' / OBJECT STUDY</div><span className="art-side">FORM FOLLOWS FUNCTION</span></div><div className="concept-info"><div><small>FICTIONAL PRODUCT / EVERYDAY TECH</small><h3>A pocket-sized focus companion.</h3><p>A tiny desk object imagined to help you create a calmer start to deep work.</p></div><span className="concept-number">01</span></div><div className="vote-actions"><button className={choice==="want"?"selected":""} onClick={()=>setChoice("want")}><span>＋</span> WANT IT <b>↗</b></button><button className={choice==="kill"?"selected":""} onClick={()=>setChoice("kill")}><span>×</span> NOT FOR ME <b>↗</b></button></div><div className="vote-feedback">{choice ? "PREVIEW RESPONSE: "+(choice==="want"?"WANT IT":"NOT FOR ME")+" — STORED ONLY IN THIS PAGE." : "A GOOD QUESTION MAKES ROOM FOR BOTH ANSWERS."}</div></article>
-      </div>
-    </section>
+      <section className="vz-marquee" aria-label="VEZQO principles">
+        <div>IDEAS DESERVE A REAL AUDIENCE <b>✳</b> LESS GUESSING. MORE SIGNAL. <b>✳</b> WANT IT OR KILL IT. <b>✳</b> IDEAS DESERVE A REAL AUDIENCE <b>✳</b></div>
+      </section>
 
-    <section className="method-section section-pad" id="method" data-reveal>
-      <div className="section-kicker"><span>03 / THE METHOD</span><span>THREE MOVES, ONE CLEARER PICTURE</span></div><div className="method-heading"><h2>DON'T GUESS.<br/><em>GET CLOSER.</em></h2><p>VEZQO is a place to test an early thought in public. It helps collect perspective—not certainty, not a promise of success.</p></div>
-      <div className="method-body"><div className="method-list">{steps.map((s,i)=><button key={s.n} onClick={()=>setActive(i)} className={active===i?"method-active":""}><span className="method-no">{s.n}</span><span className="method-text"><small>{s.tag}</small><strong>{s.title}</strong><em>{s.body}</em></span><span className="method-arrow">↗</span></button>)}</div><div className="method-detail"><div className="detail-orbit"><div className="detail-core">{steps[active].n}</div><i/><b/></div><small>THE VEZQO LOOP / {steps[active].tag}</small><h3>{steps[active].title}</h3><p>{steps[active].body}</p><div className="detail-progress"><i style={{width:(active+1)*33.333+"%"}}/></div><span>0{active+1} / 03</span></div></div>
-    </section>
+      <section className="vz-intro vz-section">
+        <div className="vz-section-label"><span>01 / THE PROBLEM</span><span>SUPPORT ISN'T THE SAME AS DEMAND</span></div>
+        <div className="vz-intro-grid">
+          <h2>YOUR IDEA<br />NEEDS MORE<br /><em>THAN AN ECHO.</em></h2>
+          <div className="vz-intro-copy">
+            <span className="vz-quote">“</span>
+            <p>Friends may encourage you. Followers may like your post. But neither tells you how people who don't know you will react to your idea.</p>
+            <p>VEZQO gives concepts a place to meet real opinions—so the next move starts with a signal, not a guess.</p>
+            <a href="#how-it-works" className="vz-text-link">GET TO KNOW THE PROCESS <b>↗</b></a>
+          </div>
+        </div>
+      </section>
 
-    <section className="fieldnotes-section section-pad" id="fieldnotes" data-reveal>
-      <div className="section-kicker"><span>04 / FIELD NOTES</span><span>EXAMPLES OF IDEAS THAT COULD BE TESTED</span></div><div className="fieldnotes-heading"><h2>THE NEXT THING<br/>ISN'T <em>HERE YET.</em></h2><p>These fictional concept studies show the kinds of questions people might bring to VEZQO.</p></div>
-      <div className="fieldnote-grid">{examples.map((x,i)=><article className={"fieldnote "+x.cls} key={x.n}><div className="fieldnote-art"><span className="fieldnote-id">{x.n}</span><div className="fieldnote-object"><i/><b/><em/></div><span className="fieldnote-coordinate">STUDY / 0{i+1}</span></div><div className="fieldnote-meta"><small>{x.type}</small><span>↗</span></div><h3>{x.title}</h3><p>{x.desc}</p></article>)}</div>
-    </section>
+      <section className="vz-vote-section vz-section" id="live-vote">
+        <div className="vz-section-label"><span>02 / FEEL THE DECISION</span><span>INTERACTIVE PREVIEW / NOT A REAL VOTE</span></div>
+        <div className="vz-vote-layout">
+          <div className="vz-vote-heading">
+            <span className="vz-index-ghost">02</span>
+            <div className="vz-kicker"><i /> THE FIRST REACTION MATTERS</div>
+            <h2>WOULD YOU<br /><em>WANT IT?</em></h2>
+            <p>Here's a fictional concept. Cast a preview vote and see how VEZQO captures a simple decision.</p>
+            <div className="vz-demo-note"><i /> DEMO ONLY · YOUR RESPONSE IS NOT SUBMITTED</div>
+          </div>
+          <article className="vz-vote-card">
+            <div className="vz-vote-card-top"><span>CONCEPT / 001</span><span>VEZQO TEST LAB</span></div>
+            <div className="vz-product-visual">
+              <div className="vz-product-aura" />
+              <div className="vz-earbud-case"><i /><b /><span /></div>
+              <div className="vz-earbud bud-left"><i /></div>
+              <div className="vz-earbud bud-right"><i /></div>
+              <div className="vz-product-orbit orbit-one" />
+              <div className="vz-product-orbit orbit-two" />
+              <small>PRODUCT STUDY / FOCUS AUDIO</small>
+            </div>
+            <div className="vz-vote-info">
+              <div><small>CONSUMER TECH / FICTIONAL CONCEPT</small><h3>Focus, without the noise.</h3><p>A pocket-sized audio companion imagined for people who need room to think.</p></div>
+              <span>01—PX</span>
+            </div>
+            <div className="vz-vote-buttons">
+              <button className={choice === "want" ? "is-selected" : ""} onClick={() => setChoice("want")}><span>＋</span> WANT IT <b>↗</b></button>
+              <button className={choice === "kill" ? "is-selected is-kill" : "is-kill"} onClick={() => setChoice("kill")}><span>×</span> KILL IT <b>↗</b></button>
+            </div>
+            <div className="vz-vote-status" role="status">{choice ? "PREVIEW SIGNAL: " + (choice === "want" ? "WANT IT" : "KILL IT") + " — THIS IS NOT A LIVE PLATFORM VOTE." : "ONE IDEA. TWO HONEST ANSWERS. NO PRESSURE."}</div>
+          </article>
+        </div>
+      </section>
 
-    <section className="closing-section" data-reveal><div className="closing-top"><span>THE FIRST STEP IS A QUESTION.</span><span>VEZQO / OPEN CALL</span></div><h2>LET THE<br/><em>WORLD IN.</em></h2><div className="closing-bottom"><p>Your idea deserves more than a guess. Give it a first audience.</p><a href="/signup">START WITH YOUR IDEA <b>↗</b></a></div><div className="closing-watermark">ASK / LISTEN / DECIDE</div></section>
+      <section className="vz-how vz-section" id="how-it-works">
+        <div className="vz-section-label"><span>03 / HOW VEZQO WORKS</span><span>FROM FIRST THOUGHT TO CLEARER SIGNAL</span></div>
+        <div className="vz-how-heading"><h2>IDEAS IN MOTION.<br /><em>DECISIONS WITH DIRECTION.</em></h2><p>Three simple steps. One better-informed next move.</p></div>
+        <div className="vz-how-grid">
+          <div className="vz-step-list">
+            {steps.map((step, index) => (
+              <button key={step.n} className={activeStep === index ? "active" : ""} onClick={() => setActiveStep(index)}>
+                <span className="vz-step-no">{step.n}</span>
+                <span className="vz-step-copy"><small>{step.tag}</small><strong>{step.title}</strong><em>{step.body}</em></span>
+                <b>↗</b>
+              </button>
+            ))}
+          </div>
+          <div className="vz-step-scene">
+            <div className="vz-step-orbit"><div className="vz-step-core">{steps[activeStep].n}</div><i /><b /></div>
+            <small>THE VEZQO LOOP / {steps[activeStep].tag}</small>
+            <h3>{steps[activeStep].title}</h3>
+            <p>{steps[activeStep].body}</p>
+            <div className="vz-step-progress"><i style={{ width: (activeStep + 1) * 33.333 + "%" }} /></div>
+            <span>0{activeStep + 1} / 03</span>
+          </div>
+        </div>
+      </section>
 
-    <footer className="site-footer"><Logo compact/><span>IDEAS DESERVE EVIDENCE.</span><nav><a href="#why">THE WHY</a><a href="#method">THE METHOD</a><a href="/login">LOG IN</a><a href="/signup">SIGN UP</a></nav><small>© {new Date().getFullYear()} VEZQO</small></footer>
-  </main>;
+      <section className="vz-discover vz-section" id="discover">
+        <div className="vz-section-label"><span>04 / IDEAS WORTH TESTING</span><span>CONCEPTS ARE EXAMPLES, NOT LIVE LISTINGS</span></div>
+        <div className="vz-discover-heading"><h2>WHAT COULD<br />THE WORLD <em>WANT?</em></h2><p>From products to digital experiences, every big thing starts as a question.</p></div>
+        <div className="vz-concept-grid">
+          {concepts.map((concept) => (
+            <article className="vz-concept" key={concept.id}>
+              <div className={"vz-concept-art " + concept.kind}>
+                <span>{concept.id} / CONCEPT STUDY</span>
+                <div className="vz-concept-object"><i /><b /><em /></div>
+                <small>{concept.type}</small>
+              </div>
+              <div className="vz-concept-copy"><small>{concept.type}</small><h3>{concept.title}</h3><p>{concept.body}</p><a href="/signup" aria-label={"Test an idea like " + concept.title}>TEST AN IDEA <b>↗</b></a></div>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section className="vz-final">
+        <div className="vz-final-orbit orbit-a" /><div className="vz-final-orbit orbit-b" />
+        <div className="vz-final-label"><span>THE NEXT MOVE STARTS HERE</span><span>VEZQO / OPEN CALL</span></div>
+        <h2>DON'T BUILD<br />ON A <em>GUESS.</em></h2>
+        <div className="vz-final-bottom"><p>Give your idea a first audience. See what comes back.</p><a href="/signup" className="vz-button">LAUNCH YOUR IDEA <span>↗</span></a></div>
+      </section>
+
+      <footer className="vz-footer">
+        <div className="vz-footer-brand"><Logo /><p>Ideas. Votes. Impact.</p></div>
+        <nav><a href="#how-it-works">HOW IT WORKS</a><a href="#live-vote">LIVE VOTE</a><a href="/login">LOG IN</a><a href="/signup">SIGN UP</a></nav>
+        <div className="vz-footer-bottom"><span>© {new Date().getFullYear()} VEZQO. ALL RIGHTS RESERVED.</span><span>BUILT FOR IDEAS THAT DESERVE A REAL ANSWER.</span></div>
+      </footer>
+    </main>
+  );
 }
