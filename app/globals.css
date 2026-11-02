@@ -839,3 +839,33 @@ a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid #a9c5
 @media(max-width:760px){.site-nav{position:relative}.hero-section:before{width:100vw;height:100vw;right:-35%}.floating-note{backdrop-filter:blur(14px)}[data-reveal]{transform:translateY(24px) scale(.99);filter:blur(4px)}}
 @media(hover:none){.concept-card:hover,.fieldnote:hover,.method-detail:hover{transform:none}.floating-note{animation:none}}
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}[data-reveal]{opacity:1;transform:none;filter:none}}
+
+
+/* VEZQO motion pass — purposeful depth, editorial entrances and tactile feedback */
+@keyframes vz-entrance {
+  from { opacity: 0; transform: translate3d(0, 24px, 0); filter: blur(8px); }
+  to { opacity: 1; transform: translate3d(0, 0, 0); filter: blur(0); }
+}
+.hero-copy .eyebrow { animation: vz-entrance .85s cubic-bezier(.2,.75,.25,1) .04s both; }
+.hero-copy h1 { animation: vz-entrance 1s cubic-bezier(.2,.75,.25,1) .14s both, metal-sheen 11s linear infinite; }
+.hero-copy .hero-intro { animation: vz-entrance .9s cubic-bezier(.2,.75,.25,1) .28s both; }
+.hero-copy .hero-buttons { animation: vz-entrance .9s cubic-bezier(.2,.75,.25,1) .4s both; }
+.hero-copy .hero-index { animation: vz-entrance .9s cubic-bezier(.2,.75,.25,1) .52s both; }
+.hero-visual { transform-style: preserve-3d; perspective: 1400px; }
+.visual-stage { transform-style: preserve-3d; }
+.stage-object { transform-style: preserve-3d; }
+.floating-note { transform-style: preserve-3d; will-change: transform; }
+.concept-card, .fieldnote, .method-detail { transform-style: preserve-3d; backface-visibility: hidden; }
+.concept-card:hover { transform: perspective(1200px) translateY(-8px) rotateX(1.25deg) rotateY(-1.5deg); }
+.fieldnote:hover { transform: perspective(1100px) translateY(-8px) rotateX(1deg) rotateY(1deg); }
+.vote-actions button:focus-visible { outline: 2px solid #c9ddfb; outline-offset: 4px; }
+.vote-feedback { transition: color .35s ease, letter-spacing .35s ease; }
+.concept-card:has(.vote-actions button.selected) .vote-feedback { color: #dce8f7; letter-spacing: .035em; }
+@media (hover: none) {
+  .concept-card:hover, .fieldnote:hover { transform: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-copy .eyebrow, .hero-copy h1, .hero-copy .hero-intro,
+  .hero-copy .hero-buttons, .hero-copy .hero-index { animation: none !important; }
+  .concept-card:hover, .fieldnote:hover { transform: none; }
+}
