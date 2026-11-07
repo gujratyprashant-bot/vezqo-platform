@@ -360,3 +360,16 @@ button:focus-visible,a:focus-visible,input:focus-visible{outline:2px solid #ff8a
 .notfound .brand span{color:#ff6537}
 .notfound .btn{display:inline-flex}
 @media(prefers-reduced-motion:reduce){[data-reveal]{opacity:1;transform:none;filter:none;transition:none}}
+
+
+/* Workspace package checkout */
+.vz-checkout-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:18px}
+.vz-checkout-option{display:flex;flex-direction:column;gap:10px;padding:14px;border:1px solid rgba(20,20,20,.14);background:rgba(255,255,255,.58);min-width:0}
+.vz-checkout-option>div{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+.vz-checkout-option strong{font-size:11px;letter-spacing:.08em;text-transform:uppercase}
+.vz-checkout-option span{font-size:12px;font-variant-numeric:tabular-nums;white-space:nowrap}
+.vz-checkout-option button{width:100%;border:0;background:#171717;color:#fff;padding:12px 10px;font-size:10px;letter-spacing:.08em;cursor:pointer;transition:transform .2s ease,background .2s ease}
+.vz-checkout-option button:hover:not(:disabled){transform:translateY(-2px);background:#454545}
+.vz-checkout-option button:disabled{opacity:.5;cursor:not-allowed}
+.vz-checkout-option p{font-size:11px;color:#a32e2e;margin:0;line-height:1.5}
+@media(max-width:640px){.vz-checkout-grid{grid-template-columns:1fr}}
