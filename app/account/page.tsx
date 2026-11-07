@@ -1,5 +1,6 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+import { randomUUID } from "node:crypto";
 import { createClient } from "@/lib/supabase/server";
 import Logo from "@/app/components/logo";
 import CheckoutButton from "@/app/components/checkout-button";
@@ -25,8 +26,12 @@ async function createDraft(formData: FormData) {
     redirect("/account?error=validation");
   }
 
+  const slugBase = title.toLowerCase().normalize("NFKD").replace(/[\\u0300-\\u036f]/g, "").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "").slice(0, 72) || "idea";
+  const slug = `${slugBase}-${randomUUID().slice(0, 8)}`;
+
   const { error } = await supabase.from("tests").insert({
     creator_id: user.id,
+    slug,
     title,
     description,
     category_id: categoryId,
