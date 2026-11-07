@@ -10,9 +10,14 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
   const [notice, setNotice] = useState("");
   const [busy, setBusy] = useState(false);
+  const [nextPath, setNextPath] = useState("/account");
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
+    const requestedNext = params.get("next");
+    if (requestedNext && requestedNext.startsWith("/") && !requestedNext.startsWith("//") && !requestedNext.includes("\\\\")) {
+      setNextPath(requestedNext);
+    }
     if (params.get("error") === "confirmation") {
       setNotice("Email confirmation could not be completed. Please try the link again.");
     }
@@ -24,7 +29,7 @@ export default function LoginPage() {
       const supabase = createClient();
       const { error } = await supabase.auth.signInWithPassword({ email, password });
       if (error) throw error;
-      router.replace("/"); router.refresh();
+      router.replace(nextPath); router.refresh();
     } catch (error) {
       setNotice(error instanceof Error ? error.message : "Unable to log in right now.");
     } finally { setBusy(false); }
