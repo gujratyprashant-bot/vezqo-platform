@@ -2,6 +2,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import Logo from "@/app/components/logo";
+import CheckoutButton from "@/app/components/checkout-button";
 
 async function signOut() {
   "use server";
@@ -45,12 +46,13 @@ export default async function AccountPage({
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) redirect("/login?next=/account");
 
-  const [{ data: tests }, { data: categories }] = await Promise.all([
+  const [{ data: tests }, { data: categories }, { data: packages }] = await Promise.all([
     supabase.from("tests")
       .select("id,title,description,status,want_count,kill_count,created_at,slug")
       .eq("creator_id", user.id)
       .order("created_at", { ascending: false }),
     supabase.from("categories").select("id,name").eq("active", true).order("sort"),
+    supabase.from("packages").select("id,code,name,responses,price_paise").eq("active", true).order("sort"),
   ]);
   const params = await searchParams;
 
@@ -89,7 +91,7 @@ export default async function AccountPage({
               <p className="auth-lead">No ideas yet. Create your first draft above.</p>
             ) : (tests ?? []).map((test) => (
               <article className="vz-account-item" key={test.id}>
-                <div><small>{String(test.status).toUpperCase()} · {new Date(test.created_at).toLocaleDateString("en-IN")}</small><h3>{test.title}</h3><p>{test.description}</p><span>WANT {test.want_count} · KILL {test.kill_count}</span></div>
+                <div><small>{String(test.status).toUpperCase()} · {new Date(test.created_at).toLocaleDateString("en-IN")}</small><h3>{test.title}</h3><p>{test.description}</p><span>WANT {test.want_count} · KILL {test.kill_count}</span>{test.status === "draft" && <div className="vz-checkout-grid">{(packages ?? []).map((pack) => <CheckoutButton key={pack.id} testId={test.id} packageCode={pack.code} packageName={`${pack.name} · ${pack.responses} responses`} pricePaise={pack.price_paise} />)}</div>}</div>
               </article>
             ))}
           </div>
