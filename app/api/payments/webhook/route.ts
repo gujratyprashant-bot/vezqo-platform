@@ -88,19 +88,30 @@ export async function POST(request: Request) {
       if (packageError) throw packageError;
       if (!pack) throw new Error("The package linked to this order was not found.");
 
-      const { data: savedPayment, error: paymentError } = await admin
+      // The current schema has no UNIQUE constraint on cashfree_payment_id.
+      // Use an explicit lookup + update/insert instead of an invalid upsert conflict target.
+      const { data: existingPayment, error: existingPaymentError } = await admin
         .from("payments")
-        .upsert({
-          order_id: order.id,
-          cashfree_payment_id: paymentId,
-          amount_paise: paidAmount,
-          status: "captured",
-          method: payment.payment_group ?? null,
-          verified_via: "cashfree_webhook",
-        }, { onConflict: "cashfree_payment_id" })
         .select("id")
-        .single();
+        .eq("cashfree_payment_id", paymentId)
+        .maybeSingle();
 
+      if (existingPaymentError) throw existingPaymentError;
+
+      const paymentValues = {
+        order_id: order.id,
+        cashfree_payment_id: paymentId,
+        amount_paise: paidAmount,
+        status: "captured",
+        method: payment.payment_group ?? null,
+        verified_via: "cashfree_webhook",
+      };
+
+      const paymentWrite = existingPayment
+        ? await admin.from("payments").update(paymentValues).eq("id", existingPayment.id).select("id").single()
+        : await admin.from("payments").insert(paymentValues).select("id").single();
+
+      const { data: savedPayment, error: paymentError } = paymentWrite;
       if (paymentError) throw paymentError;
 
       const { error: orderUpdateError } = await admin
