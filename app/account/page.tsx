@@ -3,7 +3,14 @@ import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import Logo from "@/app/components/logo";
 
-async function signOut() {\n  "use server";\n  const supabase = await createClient();\n  await supabase.auth.signOut();\n  redirect("/");\n}\n\nasync function createDraft(formData: FormData) {
+async function signOut() {
+  "use server";
+  const supabase = await createClient();
+  await supabase.auth.signOut();
+  redirect("/");
+}
+
+async function createDraft(formData: FormData) {
   "use server";
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
