@@ -3,7 +3,7 @@ import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import Logo from "@/app/components/logo";
 
-async function createDraft(formData: FormData) {
+async function signOut() {\n  "use server";\n  const supabase = await createClient();\n  await supabase.auth.signOut();\n  redirect("/");\n}\n\nasync function createDraft(formData: FormData) {
   "use server";
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
@@ -86,7 +86,7 @@ export default async function AccountPage({
               </article>
             ))}
           </div>
-          <form action="/auth/signout" method="post"><button className="auth-home" type="submit">SIGN OUT</button></form>
+          <form action={signOut}><button className="auth-home" type="submit">SIGN OUT</button></form>
         </div>
       </section>
     </main>
