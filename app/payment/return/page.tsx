@@ -11,6 +11,9 @@ function PaymentReturnContent() {
 
   useEffect(() => {
     let active = true;
+    let timer: ReturnType<typeof setTimeout> | undefined;
+    let attempts = 0;
+
     const check = async () => {
       if (!orderId) {
         setStatus("No order reference was received.");
@@ -26,12 +29,17 @@ function PaymentReturnContent() {
         if (!response.ok) {
           throw new Error(result.error ?? "Could not verify payment.");
         }
-        if (active) {
-          setStatus(
-            result.order.status === "paid"
-              ? "Payment confirmed. Your test is being prepared."
-              : "Payment is not confirmed yet. This page will not treat a redirect as proof of payment.",
-          );
+        if (!active) return;
+        if (result.order.status === "paid") {
+          setStatus("Payment confirmed. Your test is being prepared.");
+          return;
+        }
+        attempts += 1;
+        if (attempts < 12) {
+          setStatus("Waiting for secure payment confirmation…");
+          timer = setTimeout(check, 2500);
+        } else {
+          setStatus("Payment is not confirmed yet. You can return to your workspace and check again.");
         }
       } catch (error) {
         if (active) {
@@ -45,6 +53,7 @@ function PaymentReturnContent() {
     check();
     return () => {
       active = false;
+      if (timer) clearTimeout(timer);
     };
   }, [orderId]);
 
