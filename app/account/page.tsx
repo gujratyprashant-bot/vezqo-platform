@@ -96,12 +96,14 @@ export default async function AccountPage({
 
   // Group exact duplicate drafts in the UI without deleting or modifying any records.
   const allTests = tests ?? [];
-  const visibleTests = allTests.filter((test, index) =>
-    allTests.findIndex((candidate) =>
+  const visibleTests = allTests.filter((test, index) => {
+    if (test.status !== "draft") return true;
+    return allTests.findIndex((candidate) =>
+      candidate.status === "draft" &&
       candidate.title.trim().toLocaleLowerCase() === test.title.trim().toLocaleLowerCase() &&
       candidate.description.trim().toLocaleLowerCase() === test.description.trim().toLocaleLowerCase()
-    ) === index
-  );
+    ) === index;
+  });
   const categoryOptions = categories ?? [];
 
   return (
