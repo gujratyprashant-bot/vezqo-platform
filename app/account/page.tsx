@@ -120,71 +120,94 @@ export default async function AccountPage({
   const categoryOptions = categories ?? [];
 
   return (
-    <main className="auth-page">
+    <main className="vz-shell vz-workspace">
       <Script src="https://sdk.cashfree.com/js/v3/cashfree.js" strategy="afterInteractive" />
-      <header><Logo /><a href="/">← BACK TO VEZQO</a></header>
-      <section className="auth-layout">
-        <div className="auth-editorial">
-          <span>VEZQO / YOUR WORKSPACE</span>
-          <h1>YOUR IDEAS.<br />YOUR NEXT<br /><em>MOVE.</em></h1>
-          <p>Manage your tests and turn a good question into a clearer decision.</p>
-          <div className="auth-art-mark"><i /><b /><span>03—C</span></div>
-          <small>MAKE ROOM FOR A DIFFERENT ANSWER.</small>
+      <div className="vz-topline"><span>IDEAS IN. REAL SIGNAL OUT.</span><span>VEZQO / PRIVATE WORKSPACE <b>●</b></span></div>
+      <header className="vz-nav">
+        <Logo />
+        <nav className="vz-navlinks" aria-label="Workspace navigation">
+          <a href="/">HOME</a><a href="#create-idea">CREATE IDEA</a><a href="#your-ideas">YOUR IDEAS</a>
+        </nav>
+        <div className="vz-nav-actions">
+          <span className="vz-account-email">{user.email}</span>
+          <form action={signOut}><button className="vz-workspace-signout" type="submit">SIGN OUT ↗</button></form>
         </div>
-        <div className="auth-form-wrap">
-          <div className="auth-form-kicker"><i /> MEMBER WORKSPACE</div>
-          <h2>Your<br />space.</h2>
-          <p className="auth-lead">{user.email ?? "Signed in"} · Your ideas stay connected to this account.</p>
-          {params.created === "1" && <p className="auth-notice" role="status">Your draft has been created.</p>}
-          {params.phoneSaved === "1" && <p className="auth-notice" role="status">Mobile number saved. You can continue to checkout.</p>}
-          {params.existing === "1" && <p className="auth-notice" role="status">This draft was already saved. No duplicate was created.</p>}
-          {params.error && <p className="auth-notice" role="alert">{params.error === "validation" ? "Check the title, description and category." : params.error === "category" ? "Categories could not be verified. Refresh the page and try again." : params.error === "phone" ? "Enter a valid 10-digit mobile number." : "We couldn't create that draft. Please try again."}</p>}
-          {categoriesError && <p className="auth-notice" role="alert">Categories could not load. Refresh the page before creating a draft.</p>}
-          <form action={createDraft}>
-            <label htmlFor="title">IDEA / TEST TITLE</label>
-            <input id="title" name="title" minLength={3} maxLength={120} placeholder="What do you want people to decide?" required />
-            <label htmlFor="description">DESCRIPTION</label>
-            <textarea id="description" name="description" minLength={10} maxLength={600} rows={4} placeholder="Explain the idea clearly (10–600 characters)." required />
-            <label htmlFor="category_id">CATEGORY</label>
-            <select id="category_id" name="category_id" required defaultValue="">
-              <option value="" disabled>{categoryOptions.length ? "Select a category" : "Categories unavailable — refresh"}</option>
-              {categoryOptions.map((category) => <option key={category.id} value={category.id}>{category.name}</option>)}
-            </select>
-            <CreateDraftButton disabled={categoryOptions.length === 0 || Boolean(categoriesError)} />
-          </form>
-          <form action={savePhone} className="vz-phone-form">
-            <label htmlFor="phone">MOBILE NUMBER FOR SECURE CHECKOUT</label>
-            <input id="phone" name="phone" type="tel" inputMode="numeric" autoComplete="tel-national" pattern="[0-9]{10}" minLength={10} maxLength={10} defaultValue={String(user.user_metadata?.phone ?? "").replace(/\\D/g, "").slice(-10)} placeholder="10-digit mobile number" required />
-            <button type="submit">SAVE MOBILE NUMBER ↗</button>
-          </form>
-          <div className="auth-switch">YOUR IDEAS / {allTests.length} TOTAL</div>
-          {visibleTests.length < allTests.length && <p className="auth-lead">Identical drafts are grouped here. All {allTests.length} records are preserved; nothing was deleted.</p>}
-          {testsError && <p className="auth-notice" role="alert">Your ideas could not be loaded. Refresh the page.</p>}
-          {packagesError && <p className="auth-notice" role="alert">Package options could not be loaded. Refresh the page.</p>}
-          <div className="vz-account-list">
-            {visibleTests.length === 0 ? (
-              <p className="auth-lead">No ideas yet. Create your first draft above.</p>
-            ) : visibleTests.map((test) => (
-              <article className="vz-account-item" key={test.id}>
-                <div>
-                  <small>{String(test.status).toUpperCase()} · {new Date(test.created_at).toLocaleDateString("en-IN")}</small>
-                  <h3>{test.title}</h3>
-                  <p>{test.description}</p>
-                  <span>WANT {test.want_count} · KILL {test.kill_count}</span>
-                  {test.status === "draft" && (
-                    <div className="vz-checkout-grid">
-                      {(packages ?? []).map((pack) => (
-                        <CheckoutButton key={pack.id} testId={test.id} packageCode={pack.code} packageName={`${pack.name} · ${pack.responses} responses`} pricePaise={pack.price_paise} />
-                      ))}
-                    </div>
-                  )}
-                </div>
-              </article>
-            ))}
+      </header>
+
+      <section className="vz-workspace-hero">
+        <div className="vz-workspace-hero-copy">
+          <div className="vz-kicker"><i /> MEMBER WORKSPACE / 01</div>
+          <h1>YOUR IDEAS.<br />YOUR NEXT<br /><strong>MOVE.</strong></h1>
+          <p>Turn a good question into a clearer decision. Create a test, put it in front of people, and follow the signal.</p>
+          <div className="vz-workspace-stats">
+            <div><strong>{allTests.length.toString().padStart(2,"0")}</strong><span>IDEAS SAVED</span></div>
+            <i />
+            <div><strong>{allTests.reduce((n,t)=>n+(t.want_count??0)+(t.kill_count??0),0).toString().padStart(2,"0")}</strong><span>VOTES RECEIVED</span></div>
           </div>
-          <form action={signOut}><button className="auth-home" type="submit">SIGN OUT</button></form>
+        </div>
+        <div className="vz-workspace-hero-art">
+          <div className="vz-workspace-orbit orbit-one" /><div className="vz-workspace-orbit orbit-two" />
+          <div className="vz-workspace-core"><span>V</span><i>IDEA SIGNAL / 001</i></div>
+          <div className="vz-workspace-float vz-workspace-float-a"><small>THE CROWD'S SIGNAL</small><b>WANT IT <em>↗</em></b><span><i /></span></div>
+          <div className="vz-workspace-float vz-workspace-float-b"><i /> YOUR NEXT MOVE STARTS HERE</div>
+          <div className="vz-workspace-art-caption">FIG. 003 — IDEAS IN MOTION</div>
         </div>
       </section>
+
+      <section className="vz-workspace-content">
+        <div className="vz-workspace-section-head" id="create-idea">
+          <div><span className="vz-section-index">01 / START WITH A QUESTION</span><h2>MAKE IT <em>REAL.</em></h2></div>
+          <p>A clear idea gets a clearer response. Give people something specific to react to.</p>
+        </div>
+        {params.created === "1" && <p className="vz-workspace-alert success" role="status">Your idea draft is saved. Choose a package when you're ready.</p>}
+        {params.phoneSaved === "1" && <p className="vz-workspace-alert success" role="status">Mobile number saved. You can continue to checkout.</p>}
+        {params.existing === "1" && <p className="vz-workspace-alert" role="status">This draft was already saved. No duplicate was created.</p>}
+        {params.error && <p className="vz-workspace-alert" role="alert">{params.error === "validation" ? "Check your title, description and category." : params.error === "category" ? "Categories could not be verified. Refresh and try again." : params.error === "phone" ? "Enter a valid 10-digit mobile number." : "We couldn't complete that action. Please try again."}</p>}
+        {categoriesError && <p className="vz-workspace-alert" role="alert">Categories could not load. Refresh the page before creating a draft.</p>}
+
+        <div className="vz-workspace-create-grid">
+          <div className="vz-workspace-create-aside">
+            <span>THE FIRST STEP</span><b>01</b><h3>What's the<br /><em>question?</em></h3>
+            <p>Describe what you're testing in plain language. The best tests make one decision easy to understand.</p>
+            <div className="vz-workspace-aside-rule"><i /></div>
+            <small>BE CLEAR. BE SPECIFIC. STAY CURIOUS.</small>
+          </div>
+          <form action={createDraft} className="vz-workspace-form">
+            <div className="vz-workspace-field"><label htmlFor="title">IDEA / TEST TITLE <span>01</span></label><input id="title" name="title" minLength={3} maxLength={120} placeholder="What do you want people to decide?" required /></div>
+            <div className="vz-workspace-field"><label htmlFor="description">THE CONTEXT <span>02</span></label><textarea id="description" name="description" minLength={10} maxLength={600} rows={4} placeholder="Explain the idea clearly. What is it, who is it for, and what do you want to learn?" required /><small>10–600 CHARACTERS</small></div>
+            <div className="vz-workspace-field"><label htmlFor="category_id">CHOOSE A CATEGORY <span>03</span></label><select id="category_id" name="category_id" required defaultValue=""><option value="" disabled>{categoryOptions.length ? "Select the closest category" : "Categories unavailable — refresh"}</option>{categoryOptions.map((category)=><option key={category.id} value={category.id}>{category.name}</option>)}</select></div>
+            <div className="vz-workspace-submit-row"><span>YOUR IDEA STARTS AS A PRIVATE DRAFT.</span><CreateDraftButton disabled={categoryOptions.length===0 || Boolean(categoriesError)} /></div>
+          </form>
+        </div>
+
+        <div className="vz-workspace-phone">
+          <div><span>CHECKOUT PROFILE</span><h3>One detail before launch.</h3><p>Save a 10-digit mobile number for your secure Cashfree checkout.</p></div>
+          <form action={savePhone}><input id="phone" name="phone" aria-label="10-digit mobile number" type="tel" inputMode="numeric" autoComplete="tel-national" pattern="[0-9]{10}" minLength={10} maxLength={10} defaultValue={String(user.user_metadata?.phone ?? "").replace(/\D/g,"").slice(-10)} placeholder="10-digit mobile number" required /><button type="submit">SAVE NUMBER ↗</button></form>
+        </div>
+
+        <div className="vz-workspace-section-head vz-workspace-ideas-head" id="your-ideas">
+          <div><span className="vz-section-index">02 / YOUR PRIVATE COLLECTION</span><h2>YOUR <em>IDEAS.</em></h2></div>
+          <p>{allTests.length} saved records · Your ideas stay connected to this account.</p>
+        </div>
+        {visibleTests.length < allTests.length && <p className="vz-workspace-muted">Identical draft entries are grouped here. All {allTests.length} records remain safely stored.</p>}
+        {testsError && <p className="vz-workspace-alert" role="alert">Your ideas could not be loaded. Refresh the page.</p>}
+        {packagesError && <p className="vz-workspace-alert" role="alert">Package options could not be loaded. Refresh the page.</p>}
+        <div className="vz-workspace-idea-grid">
+          {visibleTests.length===0 ? <div className="vz-workspace-empty"><span>NO IDEAS YET / 000</span><h3>Your first idea<br /><em>starts here.</em></h3><a href="#create-idea">CREATE YOUR FIRST DRAFT ↗</a></div> :
+          visibleTests.map((test,index)=>(
+            <article className="vz-workspace-idea-card" key={test.id}>
+              <div className="vz-workspace-idea-top"><span>IDEA / {String(index+1).padStart(3,"0")}</span><span className={test.status==="active"?"live":""}>{String(test.status).toUpperCase()} · {new Date(test.created_at).toLocaleDateString("en-IN")}</span></div>
+              <div className="vz-workspace-idea-mark"><span>V</span><i /></div>
+              <h3>{test.title}</h3><p>{test.description}</p>
+              <div className="vz-workspace-votes"><div><b>{test.want_count??0}</b><span>WANT IT</span></div><i /><div><b>{test.kill_count??0}</b><span>KILL IT</span></div></div>
+              {test.status==="draft" && <div className="vz-workspace-packages">{(packages??[]).map(pack=><CheckoutButton key={pack.id} testId={test.id} packageCode={pack.code} packageName={pack.name} pricePaise={pack.price_paise} />)}</div>}
+              {test.status==="active" && <a className="vz-workspace-open" href={`/test/${test.slug}`}>VIEW LIVE TEST ↗</a>}
+            </article>
+          ))}
+        </div>
+      </section>
+      <footer className="vz-footer"><div className="vz-footer-brand"><Logo /><p>Ideas. Votes. Impact.</p></div><nav><a href="/">HOME</a><a href="#create-idea">CREATE IDEA</a><a href="#your-ideas">YOUR IDEAS</a></nav><div className="vz-footer-bottom"><span>© {new Date().getFullYear()} VEZQO. ALL RIGHTS RESERVED.</span><span>BUILT FOR IDEAS THAT DESERVE A REAL ANSWER.</span></div></footer>
     </main>
   );
+}
 }
