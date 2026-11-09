@@ -373,3 +373,153 @@ button:focus-visible,a:focus-visible,input:focus-visible{outline:2px solid #ff8a
 .vz-checkout-option button:disabled{opacity:.5;cursor:not-allowed}
 .vz-checkout-option p{font-size:11px;color:#a32e2e;margin:0;line-height:1.5}
 @media(max-width:640px){.vz-checkout-grid{grid-template-columns:1fr}}
+
+
+/* VEZQO premium member workspace */
+.vz-workspace{background:#080707}
+.vz-workspace .vz-account-email{max-width:220px;overflow:hidden;text-overflow:ellipsis;color:#a99e99;font-size:10px}
+.vz-workspace-signout{border:1px solid #ffffff30;background:transparent;color:#f5eee9;padding:12px 16px;font-size:9px;font-weight:900;letter-spacing:.12em;cursor:pointer;transition:.3s}
+.vz-workspace-signout:hover{background:linear-gradient(100deg,#ff3b20,#ff842e);color:#180905;border-color:transparent;transform:translateY(-2px)}
+.vz-workspace-hero{width:89.6%;margin:auto;min-height:540px;display:grid;grid-template-columns:1fr 1fr;align-items:center;gap:5%;padding:65px 0 80px;border-bottom:1px solid #ffffff1c;position:relative}
+.vz-workspace-hero-copy{position:relative;z-index:2;animation:rise-in .8s var(--ease) both}
+.vz-workspace-hero-copy h1{font:700 clamp(58px,7vw,100px)/.88 "Space Grotesk",sans-serif;letter-spacing:-.075em;margin:26px 0;text-transform:uppercase}
+.vz-workspace-hero-copy h1 strong{font-weight:700;background:linear-gradient(100deg,#ff3a20,#ff9b43 60%,#ff4b24);background-clip:text;-webkit-background-clip:text;color:transparent}
+.vz-workspace-hero-copy>p{max-width:490px;color:#b7adaa;font-size:15px;line-height:1.8}
+.vz-workspace-stats{display:flex;align-items:center;gap:24px;margin-top:38px}
+.vz-workspace-stats>div{display:grid;gap:5px}
+.vz-workspace-stats strong{font:700 30px "Space Grotesk";color:#ff7040}
+.vz-workspace-stats span{font-size:8px;letter-spacing:.15em;color:#938986;font-weight:800}
+.vz-workspace-stats>i{height:34px;width:1px;background:#ffffff2b}
+.vz-workspace-hero-art{height:420px;position:relative;display:grid;place-items:center;isolation:isolate;perspective:900px}
+.vz-workspace-hero-art:before{content:"";position:absolute;width:70%;height:70%;border-radius:50%;background:#ff4b261c;filter:blur(65px)}
+.vz-workspace-orbit{position:absolute;width:72%;aspect-ratio:1;border:1px solid #ff6b3a48;border-radius:50%;transform:rotateX(68deg) rotateZ(-18deg);animation:workspace-orbit 18s linear infinite}
+.vz-workspace-orbit.orbit-two{width:92%;border-color:#ff6b3a25;animation-duration:26s;animation-direction:reverse}
+.vz-workspace-core{width:190px;height:190px;display:grid;place-items:center;align-content:center;gap:12px;border:1px solid #ff895b80;background:radial-gradient(circle at 35% 25%,#572018,#130d0d 65%);box-shadow:0 0 70px #ff4b2633,inset 0 0 40px #ff4b261e;transform:rotateX(8deg) rotateY(-12deg);animation:workspace-core 6s ease-in-out infinite}
+.vz-workspace-core span{font:700 100px/.8 "Space Grotesk";color:#ff7040;text-shadow:0 0 35px #ff4b26}
+.vz-workspace-core i{font-style:normal;font-size:7px;letter-spacing:.18em;color:#c7a69b}
+.vz-workspace-float{position:absolute;z-index:3;border:1px solid #ffffff2b;background:#100d0df0;box-shadow:0 20px 60px #0009;backdrop-filter:blur(14px)}
+.vz-workspace-float-a{right:0;top:16%;padding:15px 18px;width:190px;animation:float-card 7s ease-in-out infinite}
+.vz-workspace-float-a small{display:block;font-size:7px;color:#aa9890;letter-spacing:.15em}
+.vz-workspace-float-a b{display:block;font:700 22px "Space Grotesk";margin:10px 0;color:#fff}
+.vz-workspace-float-a em{float:right;color:#ff7040;font-style:normal}
+.vz-workspace-float-a>span{display:block;height:3px;background:#45302a}
+.vz-workspace-float-a>span i{display:block;width:72%;height:100%;background:linear-gradient(90deg,#ff3b20,#ffb05a)}
+.vz-workspace-float-b{left:0;bottom:14%;padding:13px 15px;font-size:7px;letter-spacing:.13em;color:#d6c7c0;animation:float-card 8s ease-in-out infinite reverse}
+.vz-workspace-float-b>i{display:inline-block;width:7px;height:7px;border-radius:50%;background:#ff6134;margin-right:9px;box-shadow:0 0 12px #ff6134}
+.vz-workspace-art-caption{position:absolute;bottom:1%;right:2%;font-size:7px;letter-spacing:.16em;color:#8d7770}
+@keyframes workspace-orbit{to{transform:rotateX(68deg) rotateZ(342deg)}}
+@keyframes workspace-core{0%,100%{transform:rotateX(8deg) rotateY(-12deg) translateY(0)}50%{transform:rotateX(8deg) rotateY(12deg) translateY(-9px)}}
+.vz-workspace-content{width:89.6%;margin:0 auto;padding:75px 0 100px}
+.vz-workspace-section-head{display:flex;align-items:end;justify-content:space-between;gap:30px;margin-bottom:32px}
+.vz-section-index{font-size:8px;font-weight:900;letter-spacing:.17em;color:#ff8050}
+.vz-workspace-section-head h2{font:700 clamp(36px,5vw,62px)/.95 "Space Grotesk";letter-spacing:-.065em;margin:14px 0 0}
+.vz-workspace-section-head h2 em{font-style:normal;color:#ff7040}
+.vz-workspace-section-head>p{max-width:340px;color:#a99e99;font-size:12px;line-height:1.7;margin:0 0 3px}
+.vz-workspace-create-grid{display:grid;grid-template-columns:.72fr 1.28fr;border:1px solid #ffffff25;background:linear-gradient(120deg,#1b1010,#0d0c0d 65%);box-shadow:0 30px 100px #0006}
+.vz-workspace-create-aside{padding:38px 34px;border-right:1px solid #ffffff20;position:relative;overflow:hidden;min-height:440px}
+.vz-workspace-create-aside:after{content:"";position:absolute;width:260px;height:260px;border:1px solid #ff6a2433;border-radius:50%;right:-140px;bottom:-130px;box-shadow:0 0 0 24px #ff6a2408,0 0 0 50px #ff6a2405}
+.vz-workspace-create-aside>span{font-size:8px;letter-spacing:.16em;color:#ff8655;font-weight:900}
+.vz-workspace-create-aside>b{display:block;font:700 74px "Space Grotesk";color:#ff7040;margin:35px 0 20px;letter-spacing:-.08em}
+.vz-workspace-create-aside h3{font:700 36px/.98 "Space Grotesk";letter-spacing:-.06em;margin:0}
+.vz-workspace-create-aside h3 em{font-style:normal;color:#ff7040}
+.vz-workspace-create-aside p{max-width:260px;color:#aa9e99;font-size:12px;line-height:1.8;margin-top:20px}
+.vz-workspace-aside-rule{height:2px;width:100%;background:#ffffff20;margin:42px 0 13px}
+.vz-workspace-aside-rule i{display:block;width:30%;height:100%;background:#ff6134;box-shadow:0 0 15px #ff6134}
+.vz-workspace-create-aside small{font-size:7px;letter-spacing:.13em;color:#82736d}
+.vz-workspace-form{padding:34px 38px;display:grid;gap:22px}
+.vz-workspace-field{display:grid;gap:10px}
+.vz-workspace-field label,.vz-phone-form label{display:flex;justify-content:space-between;color:#e8dcd5;font-size:8px;font-weight:900;letter-spacing:.14em}
+.vz-workspace-field label span{color:#ff8050}
+.vz-workspace-field input,.vz-workspace-field textarea,.vz-workspace-field select,.vz-phone-form input{width:100%;border:1px solid #ffffff29;background:#090909;color:#f7f3ef;padding:15px 16px;border-radius:0;outline:none;font:400 13px "DM Sans";transition:border-color .3s,box-shadow .3s}
+.vz-workspace-field textarea{resize:vertical;min-height:110px;line-height:1.6}
+.vz-workspace-field input:focus,.vz-workspace-field textarea:focus,.vz-workspace-field select:focus,.vz-phone-form input:focus{border-color:#ff7040;box-shadow:0 0 0 3px #ff70401c}
+.vz-workspace-field input::placeholder,.vz-workspace-field textarea::placeholder,.vz-phone-form input::placeholder{color:#746b67}
+.vz-workspace-field select{color:#cfc3bd}
+.vz-workspace-field small{font-size:7px;letter-spacing:.12em;color:#8e817b;text-align:right}
+.vz-workspace-submit-row{display:flex;align-items:center;justify-content:space-between;gap:20px;border-top:1px solid #ffffff20;padding-top:22px}
+.vz-workspace-submit-row>span{font-size:7px;letter-spacing:.12em;color:#8f817a}
+.vz-workspace-submit-row button{border:0;padding:16px 22px;background:linear-gradient(105deg,#ff3b20,#ff842e);color:#190804;font-size:9px;font-weight:900;letter-spacing:.1em;cursor:pointer;box-shadow:0 8px 28px #ff4b2638;transition:.35s}
+.vz-workspace-submit-row button:hover{transform:translateY(-3px);box-shadow:0 14px 36px #ff4b2666}
+.vz-workspace-submit-row button:disabled{opacity:.5;cursor:not-allowed;transform:none}
+.vz-workspace-alert{border:1px solid #ff70405c;background:#ff4b2612;color:#ffb08c;padding:13px 16px;font-size:11px;margin:0 0 18px}
+.vz-workspace-alert.success{border-color:#64c99b66;background:#64c99b12;color:#a8e8c8}
+.vz-workspace-phone{display:flex;justify-content:space-between;align-items:center;gap:25px;margin:28px 0 90px;padding:22px 26px;border:1px solid #ffffff20;background:#111010}
+.vz-workspace-phone>div>span{font-size:7px;letter-spacing:.16em;color:#ff8655;font-weight:900}
+.vz-workspace-phone h3{font:600 18px "Space Grotesk";margin:7px 0}
+.vz-workspace-phone p{font-size:10px;color:#a99e99;margin:0}
+.vz-workspace-phone form{display:flex;gap:8px;width:min(420px,48%)}
+.vz-workspace-phone form input{min-width:0}
+.vz-workspace-phone form button{white-space:nowrap;border:0;padding:0 17px;background:#ff6a36;color:#1b0804;font-size:8px;font-weight:900;letter-spacing:.1em;cursor:pointer}
+.vz-workspace-ideas-head{margin-top:0}
+.vz-workspace-muted{font-size:10px;color:#a99e99;margin:-16px 0 25px}
+.vz-workspace-idea-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+.vz-workspace-idea-card,.vz-workspace-empty{position:relative;border:1px solid #ffffff25;background:linear-gradient(145deg,#181112,#0c0b0c 72%);padding:24px;overflow:hidden;transition:transform .4s var(--ease),border-color .4s,box-shadow .4s}
+.vz-workspace-idea-card:hover{transform:translateY(-5px);border-color:#ff784d80;box-shadow:0 22px 55px #0008}
+.vz-workspace-idea-top{display:flex;justify-content:space-between;gap:12px;color:#9b8981;font-size:7px;letter-spacing:.13em;font-weight:900}
+.vz-workspace-idea-top .live{color:#8ed6ad}
+.vz-workspace-idea-mark{height:95px;display:flex;align-items:center;justify-content:center;position:relative;margin:12px 0}
+.vz-workspace-idea-mark:before,.vz-workspace-idea-mark:after{content:"";position:absolute;width:85px;height:85px;border:1px solid #ff713d50;border-radius:50%;box-shadow:0 0 25px #ff4b2618}
+.vz-workspace-idea-mark:after{width:125px;height:125px;border-color:#ff713d20}
+.vz-workspace-idea-mark span{font:700 50px "Space Grotesk";color:#ff7040;text-shadow:0 0 25px #ff4b2666}
+.vz-workspace-idea-mark i{position:absolute;width:7px;height:7px;border-radius:50%;background:#ffb05a;box-shadow:0 0 14px #ff8a43;transform:translate(49px,-29px)}
+.vz-workspace-idea-card h3{font:600 25px "Space Grotesk";letter-spacing:-.04em;margin:10px 0}
+.vz-workspace-idea-card>p{color:#b2a6a0;font-size:11px;line-height:1.7;min-height:38px}
+.vz-workspace-votes{display:flex;align-items:center;gap:25px;padding:15px 0;border-block:1px solid #ffffff20;margin:18px 0}
+.vz-workspace-votes>div{display:flex;align-items:baseline;gap:8px}
+.vz-workspace-votes b{font:700 24px "Space Grotesk";color:#f8eee8}
+.vz-workspace-votes span{font-size:7px;letter-spacing:.12em;color:#9e918a}
+.vz-workspace-votes>i{height:22px;width:1px;background:#ffffff28}
+.vz-workspace-packages{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.vz-workspace-packages .vz-checkout-option{min-width:0;border:1px solid #ffffff20;background:#0a0909;padding:12px;display:grid;gap:10px}
+.vz-checkout-option>div{display:flex;justify-content:space-between;gap:8px;align-items:start}
+.vz-checkout-option strong{font-size:8px;line-height:1.5;color:#e9ddd6;text-transform:uppercase;letter-spacing:.06em}
+.vz-checkout-option>div>span{white-space:nowrap;color:#ff9a65;font:600 12px "Space Grotesk"}
+.vz-checkout-option button{width:100%;border:1px solid #ff704070;background:#ff542a0d;color:#ff9869;padding:11px 8px;font-size:7px;font-weight:900;letter-spacing:.08em;cursor:pointer;transition:.3s}
+.vz-checkout-option button:hover:not(:disabled){background:linear-gradient(100deg,#ff3b20,#ff842e);color:#180805;border-color:transparent}
+.vz-checkout-option button:disabled{opacity:.55;cursor:wait}
+.vz-checkout-option p{margin:0;color:#ff9c7e;font-size:9px;line-height:1.5}
+.vz-workspace-open{display:inline-flex;padding:13px 16px;background:linear-gradient(100deg,#ff3b20,#ff842e);color:#1b0804;font-size:8px;font-weight:900;letter-spacing:.1em}
+.vz-workspace-empty{grid-column:1/-1;min-height:260px;display:grid;align-content:center;justify-items:center;text-align:center}
+.vz-workspace-empty>span{font-size:8px;letter-spacing:.16em;color:#ff8050}
+.vz-workspace-empty h3{font:700 38px/.98 "Space Grotesk";margin:20px}
+.vz-workspace-empty h3 em{font-style:normal;color:#ff7040}
+.vz-workspace-empty a{font-size:8px;letter-spacing:.12em;color:#ff9a65;font-weight:900}
+.vz-workspace .vz-footer{width:89.6%;margin:auto}
+@media(max-width:900px){
+ .vz-workspace .vz-navlinks{display:none}
+ .vz-workspace-hero{grid-template-columns:1fr;gap:10px;padding:55px 0}
+ .vz-workspace-hero-art{height:330px}
+ .vz-workspace-create-grid{grid-template-columns:1fr}
+ .vz-workspace-create-aside{min-height:260px;border-right:0;border-bottom:1px solid #ffffff20;padding:28px}
+ .vz-workspace-create-aside>b{margin:18px 0 10px;font-size:54px}
+ .vz-workspace-create-aside p{max-width:480px}
+ .vz-workspace-aside-rule{margin:24px 0 12px}
+}
+@media(max-width:600px){
+ .vz-workspace .vz-nav{width:90%;height:70px}
+ .vz-workspace .brand-word{font-size:17px}
+ .vz-workspace .brand-mark{width:31px;height:31px}
+ .vz-workspace .vz-account-email{display:none}
+ .vz-workspace-signout{padding:10px;font-size:8px}
+ .vz-workspace-hero,.vz-workspace-content{width:90%}
+ .vz-workspace-hero-copy h1{font-size:58px}
+ .vz-workspace-hero-art{height:280px}
+ .vz-workspace-float-a{right:-2%;width:160px}
+ .vz-workspace-float-b{left:-2%;font-size:6px}
+ .vz-workspace-section-head{display:block}
+ .vz-workspace-section-head>p{margin-top:15px}
+ .vz-workspace-create-aside{min-height:245px}
+ .vz-workspace-form{padding:23px 18px}
+ .vz-workspace-submit-row{align-items:stretch;flex-direction:column}
+ .vz-workspace-submit-row button{width:100%}
+ .vz-workspace-phone{align-items:stretch;flex-direction:column;padding:20px;margin:24px 0 65px}
+ .vz-workspace-phone form{width:100%;flex-direction:column}
+ .vz-workspace-phone form button{padding:14px}
+ .vz-workspace-idea-grid{grid-template-columns:1fr}
+ .vz-workspace-packages{grid-template-columns:1fr 1fr}
+ .vz-workspace-idea-card{padding:19px}
+ .vz-workspace .vz-footer{width:90%}
+}
+@media(prefers-reduced-motion:reduce){
+ .vz-workspace-orbit,.vz-workspace-core,.vz-workspace-float{animation:none!important}
+}
