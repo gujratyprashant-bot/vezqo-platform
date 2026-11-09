@@ -127,7 +127,25 @@ export async function POST(request: Request) {
     const payload = await response.json().catch(() => null);
     if (!response.ok || !payload?.payment_session_id) {
       await userClient.from("orders").update({ status: "failed" }).eq("id", internalOrderId);
-      return NextResponse.json({ error: "Cashfree could not initialize checkout. Please retry." }, { status: 502 });
+      const providerMessage = typeof payload?.message === "string" ? payload.message.slice(0, 180) : "";
+      const providerCode = typeof payload?.code === "string" ? payload.code.slice(0, 80) :
+        typeof payload?.error_code === "string" ? payload.error_code.slice(0, 80) : "";
+      const requestId = response.headers.get("x-request-id") ?? "";
+      console.error("Cashfree create-order rejected", {
+        status: response.status,
+        code: providerCode,
+        message: providerMessage,
+        requestId,
+        environment: process.env.CASHFREE_ENV === "production" ? "production" : "sandbox",
+      });
+      return NextResponse.json({
+        error: "Cashfree rejected the order request.",
+        providerStatus: response.status,
+        providerCode: providerCode || null,
+        providerMessage: providerMessage || null,
+        requestId: requestId || null,
+        environment: process.env.CASHFREE_ENV === "production" ? "production" : "sandbox",
+      }, { status: 502 });
     }
 
     return NextResponse.json({
