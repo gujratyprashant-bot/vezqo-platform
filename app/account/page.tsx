@@ -19,8 +19,8 @@ async function savePhone(formData: FormData) {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) redirect("/login?next=/account");
-  const phone = String(formData.get("phone") ?? "").replace(/\\D/g, "");
-  if (!/^\\d{10}$/.test(phone)) redirect("/account?error=phone");
+  const phone = String(formData.get("phone") ?? "").replace(/\D/g, "");
+  if (!/^\d{10}$/.test(phone)) redirect("/account?error=phone");
   const { error } = await supabase.auth.updateUser({ data: { phone } });
   if (error) redirect("/account?error=phone");
   revalidatePath("/account");
