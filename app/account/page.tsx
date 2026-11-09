@@ -14,6 +14,19 @@ async function signOut() {
   redirect("/");
 }
 
+async function savePhone(formData: FormData) {
+  "use server";
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) redirect("/login?next=/account");
+  const phone = String(formData.get("phone") ?? "").replace(/\\D/g, "");
+  if (!/^\\d{10}$/.test(phone)) redirect("/account?error=phone");
+  const { error } = await supabase.auth.updateUser({ data: { phone } });
+  if (error) redirect("/account?error=phone");
+  revalidatePath("/account");
+  redirect("/account?phoneSaved=1");
+}
+
 async function createDraft(formData: FormData) {
   "use server";
   const supabase = await createClient();
@@ -74,7 +87,7 @@ async function createDraft(formData: FormData) {
 export default async function AccountPage({
   searchParams,
 }: {
-  searchParams: Promise<{ created?: string; existing?: string; error?: string }>;
+  searchParams: Promise<{ created?: string; existing?: string; error?: string; phoneSaved?: string }>;
 }) {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
@@ -123,8 +136,9 @@ export default async function AccountPage({
           <h2>Your<br />space.</h2>
           <p className="auth-lead">{user.email ?? "Signed in"} · Your ideas stay connected to this account.</p>
           {params.created === "1" && <p className="auth-notice" role="status">Your draft has been created.</p>}
+          {params.phoneSaved === "1" && <p className="auth-notice" role="status">Mobile number saved. You can continue to checkout.</p>}
           {params.existing === "1" && <p className="auth-notice" role="status">This draft was already saved. No duplicate was created.</p>}
-          {params.error && <p className="auth-notice" role="alert">{params.error === "validation" ? "Check the title, description and category." : params.error === "category" ? "Categories could not be verified. Refresh the page and try again." : "We couldn't create that draft. Please try again."}</p>}
+          {params.error && <p className="auth-notice" role="alert">{params.error === "validation" ? "Check the title, description and category." : params.error === "category" ? "Categories could not be verified. Refresh the page and try again." : params.error === "phone" ? "Enter a valid 10-digit mobile number." : "We couldn't create that draft. Please try again."}</p>}
           {categoriesError && <p className="auth-notice" role="alert">Categories could not load. Refresh the page before creating a draft.</p>}
           <form action={createDraft}>
             <label htmlFor="title">IDEA / TEST TITLE</label>
@@ -137,6 +151,11 @@ export default async function AccountPage({
               {categoryOptions.map((category) => <option key={category.id} value={category.id}>{category.name}</option>)}
             </select>
             <CreateDraftButton disabled={categoryOptions.length === 0 || Boolean(categoriesError)} />
+          </form>
+          <form action={savePhone} className="vz-phone-form">
+            <label htmlFor="phone">MOBILE NUMBER FOR SECURE CHECKOUT</label>
+            <input id="phone" name="phone" type="tel" inputMode="numeric" autoComplete="tel-national" pattern="[0-9]{10}" minLength={10} maxLength={10} defaultValue={String(user.user_metadata?.phone ?? "").replace(/\\D/g, "").slice(-10)} placeholder="10-digit mobile number" required />
+            <button type="submit">SAVE MOBILE NUMBER ↗</button>
           </form>
           <div className="auth-switch">YOUR IDEAS / {allTests.length} TOTAL</div>
           {visibleTests.length < allTests.length && <p className="auth-lead">Identical drafts are grouped here. All {allTests.length} records are preserved; nothing was deleted.</p>}
