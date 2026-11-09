@@ -201,7 +201,7 @@ export default async function AccountPage({
               <h3>{test.title}</h3><p>{test.description}</p>
               <div className="vz-workspace-votes"><div><b>{test.want_count??0}</b><span>WANT IT</span></div><i /><div><b>{test.kill_count??0}</b><span>KILL IT</span></div></div>
               {test.status==="draft" && <div className="vz-workspace-packages">{(packages??[]).map(pack=><CheckoutButton key={pack.id} testId={test.id} packageCode={pack.code} packageName={pack.name} pricePaise={pack.price_paise} />)}</div>}
-              {test.status==="active" && <a className="vz-workspace-open" href={`/test/${test.slug}`}>VIEW LIVE TEST ↗</a>}
+              {test.status==="active" && <span className="vz-workspace-open">LIVE TEST · {test.slug}</span>}
             </article>
           ))}
         </div>
