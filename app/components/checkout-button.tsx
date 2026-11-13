@@ -50,7 +50,16 @@ export default function CheckoutButton({ testId, packageCode, packageName, price
         body: JSON.stringify({ testId, packageCode }),
       });
       const result = await response.json().catch(() => null);
-      if (!response.ok) throw new Error(result?.error ?? "Unable to start checkout.");
+      if (!response.ok) {
+        const details = [
+          result?.providerStatus ? `HTTP ${result.providerStatus}` : "",
+          result?.providerCode ?? "",
+          result?.providerMessage ?? "",
+          result?.environment ? `Environment: ${result.environment}` : "",
+          result?.requestId ? `Request: ${result.requestId}` : "",
+        ].filter(Boolean).join(" · ");
+        throw new Error([result?.error ?? "Unable to start checkout.", details].filter(Boolean).join(" "));
+      }
       if (!result?.paymentSessionId || !result?.orderId) throw new Error("Cashfree did not return a valid payment session. Please retry.");
 
       const cashfree = window.Cashfree!({
