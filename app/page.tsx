@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Logo from "./components/logo";
 import HeroScene from "./components/hero-scene";
+import { createClient } from "@/lib/supabase/client";
 
 const steps = [
   { n: "01", title: "Bring the idea", body: "Describe the product, service or concept you want people to react to.", tag: "CREATE" },
@@ -19,6 +20,17 @@ const concepts = [
 export default function Home() {
   const [choice, setChoice] = useState<"want" | "kill" | "">("");
   const [activeStep, setActiveStep] = useState(0);
+  const [signedIn, setSignedIn] = useState(false);
+  const entryHref = signedIn ? "/account" : "/signup";
+
+  useEffect(() => {
+    const supabase = createClient();
+    supabase.auth.getUser().then(({ data }) => setSignedIn(Boolean(data.user)));
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setSignedIn(Boolean(session?.user));
+    });
+    return () => subscription.unsubscribe();
+  }, []);
 
   useEffect(() => {
     const targets = document.querySelectorAll<HTMLElement>("[data-reveal]");
@@ -53,8 +65,8 @@ export default function Home() {
           <a href="#discover">DISCOVER</a>
         </nav>
         <div className="vz-nav-actions">
-          <a className="vz-login" href="/login">LOG IN</a>
-          <a className="vz-nav-cta" href="/signup">LAUNCH AN IDEA <span>↗</span></a>
+          <a className="vz-login" href={signedIn ? "/account" : "/login"}>{signedIn ? "MY SPACE" : "LOG IN"}</a>
+          <a className="vz-nav-cta" href={entryHref}>{signedIn ? "OPEN WORKSPACE" : "LAUNCH AN IDEA"} <span>↗</span></a>
         </div>
       </header>
 
@@ -64,7 +76,7 @@ export default function Home() {
           <h1>DON'T JUST<br />IMAGINE.<br /><em>LET THEM</em><br /><strong>DECIDE.</strong></h1>
           <p>Put your idea in front of real people. Get a clear signal before you spend your time building the wrong thing.</p>
           <div className="vz-hero-actions">
-            <a className="vz-button" href="/signup">PUT YOUR IDEA TO THE TEST <span>↗</span></a>
+            <a className="vz-button" href={entryHref}>PUT YOUR IDEA TO THE TEST <span>↗</span></a>
             <a className="vz-watch" href="#how-it-works"><span>▶</span> SEE HOW VEZQO WORKS</a>
           </div>
           <div className="vz-hero-proof">
