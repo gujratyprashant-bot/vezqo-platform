@@ -882,3 +882,32 @@ a,button{-webkit-tap-highlight-color:transparent}
  .vz-lb-category{padding:21px 17px}
  .vz-lb-method{grid-template-columns:1fr;gap:13px;padding:25px 6vw}
 }
+
+/* VEZQO private owner control room */
+.vz-control-room{min-height:100vh;background:#0b090b}
+.vz-control-hero{position:relative;overflow:hidden;padding:clamp(60px,9vw,120px) 7vw 65px;background:radial-gradient(ellipse at 80% 45%,rgba(255,91,52,.17),transparent 36%),#100c0e}
+.vz-control-hero h1{margin:42px 0 20px;font:800 clamp(66px,10vw,128px)/.83 "Space Grotesk",sans-serif;letter-spacing:-.09em}
+.vz-control-hero h1 em{font-style:normal;color:#ff7549}
+.vz-control-hero>p{max-width:510px;color:#b9aaa4;font-size:13px;line-height:1.8}
+.vz-control-identity{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:32px;color:#9e8e89;font-size:8px;letter-spacing:.13em}
+.vz-control-identity b{color:#fff;font-size:10px;letter-spacing:0}
+.vz-control-identity span{color:#ff956c}
+.vz-control-content{padding:65px 6vw 90px}
+.vz-control-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:25px 0 48px}
+.vz-control-stats article{min-height:125px;padding:22px;border:1px solid #ffffff17;border-radius:4px 17px 4px 17px;background:linear-gradient(145deg,#21191b,#100d0f);display:flex;flex-direction:column;gap:8px}
+.vz-control-stats article span,.vz-control-stats article i{font-size:7px;font-style:normal;letter-spacing:.14em;color:#a8958f}
+.vz-control-stats article b{font:650 36px "Space Grotesk",sans-serif;color:#fff}
+.vz-control-stats article i{color:#ff936d}
+.vz-control-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.vz-control-panel{padding:24px;border:1px solid #ffffff17;border-radius:4px 18px 4px 18px;background:#141012}
+.vz-control-wide{grid-column:1/-1}
+.vz-control-panel-head{display:flex;justify-content:space-between;gap:10px;color:#ff9871;font-size:7px;letter-spacing:.14em}
+.vz-control-panel-head b{font-weight:500;color:#9e8e89}
+.vz-control-panel h2{margin:19px 0 20px;font:650 27px "Space Grotesk",sans-serif;letter-spacing:-.05em}
+.vz-control-row{display:flex;justify-content:space-between;align-items:center;gap:15px;padding:14px 0;border-top:1px solid #ffffff12;color:#f5eeeb;font-size:11px}
+.vz-control-row small{display:block;margin-top:5px;color:#9e8e89;font-size:8px}
+.vz-control-row>b{font-size:8px;letter-spacing:.1em;color:#ff9871}
+.vz-control-row a{color:#ff9871;font-size:7px;letter-spacing:.1em}
+.vz-control-empty,.vz-control-note{color:#a99b97;font-size:10px;line-height:1.8}
+.vz-control-note{margin-top:28px;max-width:850px}
+@media(max-width:700px){.vz-control-content{padding:48px 5vw 60px}.vz-control-stats{grid-template-columns:repeat(2,minmax(0,1fr))}.vz-control-grid{grid-template-columns:1fr}.vz-control-wide{grid-column:auto}.vz-control-panel{padding:19px}.vz-control-hero{padding:55px 6vw}.vz-control-row{font-size:10px}}
