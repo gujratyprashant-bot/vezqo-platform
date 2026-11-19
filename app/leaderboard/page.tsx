@@ -42,7 +42,7 @@ export default async function LeaderboardPage() {
       <section className="vz-lb-hero">
         <div className="vz-kicker"><i /> THE CROWD DECIDES / LIVE RANKINGS</div>
         <h1>THE SIGNAL<br /><em>BOARD.</em></h1>
-        <p>See what people want, category by category. Rankings are based on real WANT IT votes from active VEZQO tests.</p>
+        <p>See what people want, category by category. Rankings compare the WANT IT share of active tests with at least 20 votes, within their own category.</p>
         <div className="vz-lb-stats">
           <div><b>{String(totalIdeas).padStart(2,"0")}</b><span>LIVE TESTS</span></div><i />
           <div><b>{totalVotes.toLocaleString("en-IN")}</b><span>COMMUNITY VOTES</span></div><i />
@@ -62,18 +62,25 @@ export default async function LeaderboardPage() {
         {error && <p className="vz-workspace-alert" role="alert">Live rankings are temporarily unavailable. Please refresh in a moment.</p>}
         <div className="vz-lb-category-grid">
           {categoryList.map((category, index) => {
-            const items = listings
-              .filter((item) => {
-                const value = Array.isArray(item.categories) ? item.categories[0] : item.categories;
-                return value?.id === category.id;
+            const categoryListings = listings.filter((item) => {
+              const value = Array.isArray(item.categories) ? item.categories[0] : item.categories;
+              return value?.id === category.id;
+            });
+            const items = categoryListings
+              .filter((item) => (item.want_count ?? 0) + (item.kill_count ?? 0) >= 20)
+              .sort((a, b) => {
+                const aTotal = (a.want_count ?? 0) + (a.kill_count ?? 0);
+                const bTotal = (b.want_count ?? 0) + (b.kill_count ?? 0);
+                const aShare = aTotal ? (a.want_count ?? 0) / aTotal : 0;
+                const bShare = bTotal ? (b.want_count ?? 0) / bTotal : 0;
+                return bShare - aShare || bTotal - aTotal;
               })
-              .sort((a, b) => (b.want_count ?? 0) - (a.want_count ?? 0))
               .slice(0, 5);
             return (
               <section className="vz-lb-category" id={"category-" + category.slug} key={category.id}>
                 <div className="vz-lb-category-head"><span>{String(index + 1).padStart(2,"0")} / {category.slug.toUpperCase()}</span><b>{String(items.length).padStart(2,"0")} RANKED</b></div>
                 <h3>{category.name}<em>.</em></h3>
-                {items.length === 0 ? <div className="vz-lb-empty"><span>NO LIVE SIGNAL YET</span><p>The first active {category.name.toLowerCase()} test will appear here.</p><a href="/signup">BE THE FIRST TO LAUNCH ↗</a></div> :
+                {items.length === 0 ? <div className="vz-lb-empty"><span>NO LIVE SIGNAL YET</span><p>The first {category.name.toLowerCase()} test with at least 20 votes will appear here.</p><a href="/signup">BE THE FIRST TO LAUNCH ↗</a></div> :
                   <ol className="vz-lb-list">
                     {items.map((item, rank) => {
                       const want = item.want_count ?? 0;
@@ -97,7 +104,7 @@ export default async function LeaderboardPage() {
         </div>
       </section>
 
-      <section className="vz-lb-method"><span>HOW RANKING WORKS</span><p>Listings are grouped by their assigned category and ranked by WANT IT vote count. The YES SIGNAL shows WANT IT votes as a share of all WANT IT and KILL IT votes. Only active tests appear; rankings are not paid placements.</p></section>
+      <section className="vz-lb-method"><span>HOW RANKING WORKS</span><p>Listings are grouped by category and ranked by WANT IT share, with total votes as the tie-breaker. A listing needs at least 20 votes to qualify, reducing tiny-sample swings. Only active tests appear; rankings are not paid placements.</p></section>
       <footer className="vz-footer"><div className="vz-footer-brand"><Logo /><p>Ideas. Votes. Impact.</p></div><nav><a href="/">HOME</a><a href="/leaderboard">LEADERBOARD</a><a href="/signup">LAUNCH AN IDEA</a></nav><div className="vz-footer-bottom"><span>© {new Date().getFullYear()} VEZQO. ALL RIGHTS RESERVED.</span><span>BUILT FOR IDEAS THAT DESERVE A REAL ANSWER.</span></div></footer>
     </main>
   );
