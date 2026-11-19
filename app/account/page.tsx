@@ -55,7 +55,7 @@ async function createDraft(formData: FormData) {
     .maybeSingle();
 
   if (categoryError || !category) redirect("/account?error=category");
-  if (category.slug !== "ideas" && !officialUrl) redirect("/account?error=validation");
+  if (category.slug !== "ideas" && !officialUrl) redirect("/account?error=official");
 
   // A rapid repeat of the same form submission should reuse the existing draft.
   const duplicateWindow = new Date(Date.now() - 2 * 60 * 1000).toISOString();
