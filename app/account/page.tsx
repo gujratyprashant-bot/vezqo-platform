@@ -109,7 +109,6 @@ export default async function AccountPage({
     { data: tests, error: testsError },
     { data: categories, error: categoriesError },
     { data: packages, error: packagesError },
-    { data: clickEvents, error: clicksError },
   ] = await Promise.all([
     supabase.from("tests")
       .select("id,title,description,status,want_count,kill_count,created_at,slug,image_url,official_url,affiliate_url,affiliate_network,category_id")
@@ -117,7 +116,6 @@ export default async function AccountPage({
       .order("created_at", { ascending: false }),
     supabase.from("categories").select("id,name,slug").eq("active", true).order("sort"),
     supabase.from("packages").select("id,code,name,responses,price_paise").eq("active", true).order("sort"),
-    supabase.from("affiliate_clicks").select("test_id,destination"),
   ]);
   const params = await searchParams;
 
@@ -132,8 +130,6 @@ export default async function AccountPage({
     ) === index;
   });
   const categoryOptions = categories ?? [];
-  const clickCounts = new Map<string, { affiliate: number; official: number }>();
-  for (const click of clickEvents ?? []) { const current = clickCounts.get(click.test_id) ?? { affiliate: 0, official: 0 }; current[click.destination === "affiliate" ? "affiliate" : "official"] += 1; clickCounts.set(click.test_id, current); }
 
   return (
     <main className="vz-shell vz-workspace">
@@ -216,7 +212,6 @@ export default async function AccountPage({
               <div className="vz-workspace-idea-mark">{test.image_url ? <img src={test.image_url} alt="" /> : <><span>V</span><i /></>}</div>
               <h3>{test.title}</h3><p>{test.description}</p>
               <div className="vz-workspace-votes"><div><b>{test.want_count??0}</b><span>WANT IT</span></div><i /><div><b>{test.kill_count??0}</b><span>KILL IT</span></div></div>
-              {(test.official_url || test.affiliate_url) && <div className="vz-workspace-link-metrics"><span>LINK ACTIVITY</span><b>{clickCounts.get(test.id)?.official ?? 0} official clicks</b><b>{clickCounts.get(test.id)?.affiliate ?? 0} affiliate clicks</b></div>}
               {test.status==="draft" && <div className="vz-workspace-packages">{(packages??[]).map(pack=><CheckoutButton key={pack.id} testId={test.id} packageCode={pack.code} packageName={pack.name} pricePaise={pack.price_paise} />)}</div>}
               {test.status==="active" && <div className="vz-workspace-open-row"><a className="vz-workspace-open" href={"/p/" + test.slug} target="_blank" rel="noreferrer">OPEN PUBLIC PAGE ↗</a>{test.official_url && <a href={"/go/" + test.id + "/official"} target="_blank" rel="noreferrer">OFFICIAL LINK ↗</a>}{test.affiliate_url && <a href={"/go/" + test.id + "/affiliate"} target="_blank" rel="noreferrer">AFFILIATE LINK ↗</a>}</div>}
             </article>
