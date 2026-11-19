@@ -115,7 +115,7 @@ export default async function AccountPage({
       .select("id,title,description,status,want_count,kill_count,created_at,slug,image_url,official_url,affiliate_url,affiliate_network,category_id")
       .eq("creator_id", user.id)
       .order("created_at", { ascending: false }),
-    supabase.from("categories").select("id,name").eq("active", true).order("sort"),
+    supabase.from("categories").select("id,name,slug").eq("active", true).order("sort"),
     supabase.from("packages").select("id,code,name,responses,price_paise").eq("active", true).order("sort"),
     supabase.from("affiliate_clicks").select("test_id,destination"),
   ]);
