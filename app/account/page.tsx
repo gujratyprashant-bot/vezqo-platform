@@ -6,6 +6,7 @@ import { createClient } from "@/lib/supabase/server";
 import Logo from "@/app/components/logo";
 import CheckoutButton from "@/app/components/checkout-button";
 import CreateDraftButton from "@/app/components/create-draft-button";
+import DraftCategoryFields from "@/app/components/draft-category-fields";
 
 async function signOut() {
   "use server";
@@ -36,34 +37,41 @@ async function createDraft(formData: FormData) {
   const title = String(formData.get("title") ?? "").trim();
   const description = String(formData.get("description") ?? "").trim();
   const categoryId = String(formData.get("category_id") ?? "");
+  const imageUrl = String(formData.get("image_url") ?? "").trim();
+  const officialUrl = String(formData.get("official_url") ?? "").trim();
+  const affiliateUrl = String(formData.get("affiliate_url") ?? "").trim();
+  const affiliateNetwork = String(formData.get("affiliate_network") ?? "").trim();
+  const validHttpsUrl = (value: string) => { if (!value) return true; try { const url = new URL(value); return url.protocol === "https:" && !url.username && !url.password && value.length <= 2048; } catch { return false; } };
 
-  if (title.length < 3 || title.length > 120 || description.length < 10 || description.length > 600 || !categoryId) {
+  if (title.length < 3 || title.length > 120 || description.length < 10 || description.length > 600 || !categoryId || !validHttpsUrl(imageUrl) || !validHttpsUrl(officialUrl) || !validHttpsUrl(affiliateUrl) || (affiliateUrl && !["cuelinks","impact","partnerstack","other"].includes(affiliateNetwork))) {
     redirect("/account?error=validation");
   }
 
   const { data: category, error: categoryError } = await supabase
     .from("categories")
-    .select("id")
+    .select("id,slug")
     .eq("id", categoryId)
     .eq("active", true)
     .maybeSingle();
 
   if (categoryError || !category) redirect("/account?error=category");
+  if (category.slug !== "ideas" && !officialUrl) redirect("/account?error=validation");
 
   // A rapid repeat of the same form submission should reuse the existing draft.
   const duplicateWindow = new Date(Date.now() - 2 * 60 * 1000).toISOString();
   const { data: recentDraft } = await supabase
     .from("tests")
-    .select("id")
+    .select("id,image_url,official_url,affiliate_url")
     .eq("creator_id", user.id)
     .eq("status", "draft")
     .eq("title", title)
     .eq("description", description)
+    .eq("category_id", categoryId)
     .gte("created_at", duplicateWindow)
     .limit(1)
     .maybeSingle();
 
-  if (recentDraft) {
+  if (recentDraft && recentDraft.image_url === (imageUrl || null) && recentDraft.official_url === (officialUrl || null) && recentDraft.affiliate_url === (affiliateUrl || null)) {
     revalidatePath("/account");
     redirect("/account?existing=1");
   }
@@ -77,6 +85,10 @@ async function createDraft(formData: FormData) {
     title,
     description,
     category_id: categoryId,
+    image_url: imageUrl || null,
+    official_url: officialUrl || null,
+    affiliate_url: affiliateUrl || null,
+    affiliate_network: affiliateUrl ? affiliateNetwork : null,
   });
 
   if (error) redirect("/account?error=create");
@@ -97,13 +109,15 @@ export default async function AccountPage({
     { data: tests, error: testsError },
     { data: categories, error: categoriesError },
     { data: packages, error: packagesError },
+    { data: clickEvents, error: clicksError },
   ] = await Promise.all([
     supabase.from("tests")
-      .select("id,title,description,status,want_count,kill_count,created_at,slug")
+      .select("id,title,description,status,want_count,kill_count,created_at,slug,image_url,official_url,affiliate_url,affiliate_network,category_id")
       .eq("creator_id", user.id)
       .order("created_at", { ascending: false }),
     supabase.from("categories").select("id,name").eq("active", true).order("sort"),
     supabase.from("packages").select("id,code,name,responses,price_paise").eq("active", true).order("sort"),
+    supabase.from("affiliate_clicks").select("test_id,destination"),
   ]);
   const params = await searchParams;
 
@@ -118,6 +132,8 @@ export default async function AccountPage({
     ) === index;
   });
   const categoryOptions = categories ?? [];
+  const clickCounts = new Map<string, { affiliate: number; official: number }>();
+  for (const click of clickEvents ?? []) { const current = clickCounts.get(click.test_id) ?? { affiliate: 0, official: 0 }; current[click.destination === "affiliate" ? "affiliate" : "official"] += 1; clickCounts.set(click.test_id, current); }
 
   return (
     <main className="vz-shell vz-workspace">
@@ -175,7 +191,7 @@ export default async function AccountPage({
           <form action={createDraft} className="vz-workspace-form">
             <div className="vz-workspace-field"><label htmlFor="title">IDEA / TEST TITLE <span>01</span></label><input id="title" name="title" minLength={3} maxLength={120} placeholder="What do you want people to decide?" required /></div>
             <div className="vz-workspace-field"><label htmlFor="description">THE CONTEXT <span>02</span></label><textarea id="description" name="description" minLength={10} maxLength={600} rows={4} placeholder="Explain the idea clearly. What is it, who is it for, and what do you want to learn?" required /><small>10–600 CHARACTERS</small></div>
-            <div className="vz-workspace-field"><label htmlFor="category_id">CHOOSE A CATEGORY <span>03</span></label><select id="category_id" name="category_id" required defaultValue=""><option value="" disabled>{categoryOptions.length ? "Select the closest category" : "Categories unavailable — refresh"}</option>{categoryOptions.map((category)=><option key={category.id} value={category.id}>{category.name}</option>)}</select></div>
+            <DraftCategoryFields categories={categoryOptions} />
             <div className="vz-workspace-submit-row"><span>YOUR IDEA STARTS AS A PRIVATE DRAFT.</span><CreateDraftButton disabled={categoryOptions.length===0 || Boolean(categoriesError)} /></div>
           </form>
         </div>
@@ -197,11 +213,12 @@ export default async function AccountPage({
           visibleTests.map((test,index)=>(
             <article className="vz-workspace-idea-card" key={test.id}>
               <div className="vz-workspace-idea-top"><span>IDEA / {String(index+1).padStart(3,"0")}</span><span className={test.status==="active"?"live":""}>{String(test.status).toUpperCase()} · {new Date(test.created_at).toLocaleDateString("en-IN")}</span></div>
-              <div className="vz-workspace-idea-mark"><span>V</span><i /></div>
+              <div className="vz-workspace-idea-mark">{test.image_url ? <img src={test.image_url} alt="" /> : <><span>V</span><i /></>}</div>
               <h3>{test.title}</h3><p>{test.description}</p>
               <div className="vz-workspace-votes"><div><b>{test.want_count??0}</b><span>WANT IT</span></div><i /><div><b>{test.kill_count??0}</b><span>KILL IT</span></div></div>
+              {(test.official_url || test.affiliate_url) && <div className="vz-workspace-link-metrics"><span>LINK ACTIVITY</span><b>{clickCounts.get(test.id)?.official ?? 0} official clicks</b><b>{clickCounts.get(test.id)?.affiliate ?? 0} affiliate clicks</b></div>}
               {test.status==="draft" && <div className="vz-workspace-packages">{(packages??[]).map(pack=><CheckoutButton key={pack.id} testId={test.id} packageCode={pack.code} packageName={pack.name} pricePaise={pack.price_paise} />)}</div>}
-              {test.status==="active" && <span className="vz-workspace-open">LIVE TEST · {test.slug}</span>}
+              {test.status==="active" && <div className="vz-workspace-open-row"><a className="vz-workspace-open" href={"/p/" + test.slug} target="_blank" rel="noreferrer">OPEN PUBLIC PAGE ↗</a>{test.official_url && <a href={"/go/" + test.id + "/official"} target="_blank" rel="noreferrer">OFFICIAL LINK ↗</a>}{test.affiliate_url && <a href={"/go/" + test.id + "/affiliate"} target="_blank" rel="noreferrer">AFFILIATE LINK ↗</a>}</div>}
             </article>
           ))}
         </div>
