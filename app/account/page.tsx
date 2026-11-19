@@ -178,7 +178,7 @@ export default async function AccountPage({
         {params.created === "1" && <p className="vz-workspace-alert success" role="status">Your idea draft is saved. Choose a package when you're ready.</p>}
         {params.phoneSaved === "1" && <p className="vz-workspace-alert success" role="status">Mobile number saved. You can continue to checkout.</p>}
         {params.existing === "1" && <p className="vz-workspace-alert" role="status">This draft was already saved. No duplicate was created.</p>}
-        {params.error && <p className="vz-workspace-alert" role="alert">{params.error === "validation" ? "Check your title, description and category." : params.error === "category" ? "Categories could not be verified. Refresh and try again." : params.error === "phone" ? "Enter a valid 10-digit mobile number." : "We couldn't complete that action. Please try again."}</p>}
+        {params.error && <p className="vz-workspace-alert" role="alert">{params.error === "validation" ? "Check your title, description and category." : params.error === "category" ? "Categories could not be verified. Refresh and try again." : params.error === "phone" ? "Enter a valid 10-digit mobile number." : params.error === "official" ? "Add the official page link for this category." : "We couldn't complete that action. Please try again."}</p>}
         {categoriesError && <p className="vz-workspace-alert" role="alert">Categories could not load. Refresh the page before creating a draft.</p>}
 
         <div className="vz-workspace-create-grid">
