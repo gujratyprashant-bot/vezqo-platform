@@ -90,7 +90,7 @@ export default async function LeaderboardPage() {
                       </li>;
                     })}
                   </ol>}
-                <a className="vz-lb-category-link" href={"/leaderboard/" + category.slug}>EXPLORE {category.name.toUpperCase()} <span>↗</span></a>
+                <a className="vz-lb-category-link" href={"#category-" + category.slug}>VIEW {category.name.toUpperCase()} <span>↗</span></a>
               </section>
             );
           })}
