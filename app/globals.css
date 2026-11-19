@@ -807,3 +807,78 @@ a,button{-webkit-tap-highlight-color:transparent}
  .vz-public-top{height:66px}
  .vz-public-top>span{font-size:6px}
 }
+
+/* VEZQO / category signal board */
+.vz-leaderboard{min-height:100vh}
+.vz-lb-hero{position:relative;isolation:isolate;overflow:hidden;min-height:510px;padding:clamp(54px,8vw,112px) 7vw 62px;background:radial-gradient(ellipse at 78% 52%,rgba(255,91,52,.16),transparent 34%),linear-gradient(120deg,#100c0e,#0b090b)}
+.vz-lb-hero .vz-kicker{position:relative;z-index:1}
+.vz-lb-hero h1{position:relative;z-index:1;margin:44px 0 20px;font:800 clamp(76px,12vw,154px)/.79 "Space Grotesk",sans-serif;letter-spacing:-.095em}
+.vz-lb-hero h1 em,.vz-lb-intro h2 em{font-style:normal;color:#ff7549}
+.vz-lb-hero>p{position:relative;z-index:1;max-width:480px;color:#b9aaa4;font-size:14px;line-height:1.8}
+.vz-lb-stats{position:relative;z-index:1;display:flex;align-items:center;gap:26px;margin-top:46px}
+.vz-lb-stats>div{display:flex;flex-direction:column;gap:5px}
+.vz-lb-stats b{font:600 26px "Space Grotesk",sans-serif}
+.vz-lb-stats span{font-size:7px;letter-spacing:.16em;color:#a99b97}
+.vz-lb-stats>i{height:34px;width:1px;background:#ffffff25}
+.vz-lb-orbit{position:absolute;z-index:-1;right:9%;top:50%;width:340px;height:340px;transform:translateY(-50%);border:1px solid #ff885333;border-radius:50%;display:grid;place-items:center;box-shadow:0 0 0 35px #ff88530a,0 0 0 75px #ff885307}
+.vz-lb-orbit:before,.vz-lb-orbit:after{content:"";position:absolute;inset:22px;border:1px solid #ff885322;border-radius:50%;transform:rotateX(66deg) rotateZ(24deg)}
+.vz-lb-orbit:after{inset:52px;transform:rotateX(66deg) rotateZ(-24deg)}
+.vz-lb-orbit span{font:800 160px "Space Grotesk",sans-serif;color:#ff7847;text-shadow:0 0 70px #ff784766}
+.vz-lb-orbit i,.vz-lb-orbit b{position:absolute;width:9px;height:9px;border-radius:50%;background:#ff956c;box-shadow:0 0 22px #ff714b}
+.vz-lb-orbit i{top:30px;right:90px}.vz-lb-orbit b{bottom:56px;left:26px}
+.vz-lb-categories{position:sticky;top:0;z-index:10;display:flex;gap:0;overflow-x:auto;padding:0 6vw;background:rgba(12,10,12,.92);border-block:1px solid #ffffff15;backdrop-filter:blur(18px);scrollbar-width:none}
+.vz-lb-categories::-webkit-scrollbar{display:none}
+.vz-lb-categories a{flex:0 0 auto;display:flex;align-items:center;gap:16px;padding:21px 19px;color:#a99b97;font-size:8px;letter-spacing:.12em;border-bottom:2px solid transparent;transition:.25s}
+.vz-lb-categories a:hover,.vz-lb-categories a.active{color:#fff;border-bottom-color:#ff7549}
+.vz-lb-categories a span{color:#ff8b63}
+.vz-lb-overview{padding:88px 6vw 95px}
+.vz-lb-intro{display:flex;align-items:flex-end;justify-content:space-between;gap:35px;margin:38px 0 48px}
+.vz-lb-intro h2{font:750 clamp(42px,6vw,76px)/.92 "Space Grotesk",sans-serif;letter-spacing:-.07em;margin:0}
+.vz-lb-intro p{max-width:360px;color:#aa9c97;font-size:12px;line-height:1.8;margin:0 0 4px}
+.vz-lb-category-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+.vz-lb-category{scroll-margin-top:90px;padding:25px 25px 20px;border:1px solid #ffffff16;border-radius:4px 20px 4px 20px;background:linear-gradient(145deg,rgba(34,25,27,.84),rgba(14,12,15,.92));transition:border-color .3s,transform .3s}
+.vz-lb-category:hover{border-color:#ff8a5544;transform:translateY(-3px)}
+.vz-lb-category-head{display:flex;justify-content:space-between;gap:10px;color:#ff9a73;font-size:7px;letter-spacing:.15em}
+.vz-lb-category-head b{color:#958580;font-weight:500}
+.vz-lb-category h3{font:650 31px "Space Grotesk",sans-serif;letter-spacing:-.05em;margin:18px 0 20px}
+.vz-lb-category h3 em{color:#ff7549;font-style:normal}
+.vz-lb-list{list-style:none;margin:0;padding:0}
+.vz-lb-list li{display:flex;align-items:center;gap:14px;padding:12px 0;border-top:1px solid #ffffff12}
+.vz-lb-rank{font:600 13px "Space Grotesk",sans-serif;color:#776b68}
+.vz-lb-item{min-width:0;flex:1;display:flex;align-items:center;gap:12px;color:#fff}
+.vz-lb-thumb{width:48px;height:48px;flex:0 0 48px;display:grid;place-items:center;overflow:hidden;border-radius:9px;background:radial-gradient(circle at 40% 35%,#6b3328,#1a1214);color:#ff956c}
+.vz-lb-thumb img{width:100%;height:100%;object-fit:cover}
+.vz-lb-thumb b{font:700 23px "Space Grotesk",sans-serif}
+.vz-lb-item-copy{min-width:0;flex:1;display:flex;flex-direction:column;gap:5px}
+.vz-lb-item-copy strong{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:12px}
+.vz-lb-item-copy small{font-size:7px;letter-spacing:.07em;color:#a99b97}
+.vz-lb-item-copy>i{height:3px;overflow:hidden;border-radius:9px;background:#ffffff18}
+.vz-lb-item-copy>i b{display:block;height:100%;border-radius:9px;background:linear-gradient(90deg,#ff4b2c,#ff9a56)}
+.vz-lb-score{min-width:56px;display:flex;flex-direction:column;align-items:flex-end;gap:3px}
+.vz-lb-score b{font:600 17px "Space Grotesk",sans-serif;color:#ff956c}
+.vz-lb-score small{font-size:6px;letter-spacing:.1em;color:#8c7d79}
+.vz-lb-empty{min-height:128px;display:flex;flex-direction:column;justify-content:center;border-top:1px solid #ffffff12}
+.vz-lb-empty>span{font-size:7px;letter-spacing:.15em;color:#ff9871}
+.vz-lb-empty p{font-size:11px;color:#a99b97;margin:10px 0 14px}
+.vz-lb-empty a,.vz-lb-category-link{font-size:7px;letter-spacing:.13em;color:#ff956c}
+.vz-lb-category-link{display:flex;justify-content:space-between;padding-top:18px;margin-top:14px;border-top:1px solid #ffffff12}
+.vz-lb-method{display:grid;grid-template-columns:180px 1fr;gap:35px;padding:28px 6vw 42px;border-top:1px solid #ffffff14;background:#100d0f}
+.vz-lb-method>span{font-size:8px;letter-spacing:.14em;color:#ff9871}
+.vz-lb-method p{max-width:800px;margin:0;color:#a99b97;font-size:10px;line-height:1.8}
+@media(max-width:760px){
+ .vz-lb-hero{min-height:450px;padding:54px 7vw 44px}
+ .vz-lb-hero h1{font-size:clamp(66px,17vw,110px);margin-top:54px}
+ .vz-lb-orbit{width:190px;height:190px;right:-55px;top:50%;opacity:.55}
+ .vz-lb-orbit span{font-size:90px}
+ .vz-lb-stats{gap:15px;margin-top:36px}
+ .vz-lb-stats b{font-size:20px}
+ .vz-lb-stats span{font-size:6px}
+ .vz-lb-categories{padding:0 3vw}
+ .vz-lb-categories a{padding:17px 12px;font-size:7px}
+ .vz-lb-overview{padding:58px 5vw 65px}
+ .vz-lb-intro{display:block;margin:30px 0}
+ .vz-lb-intro p{margin-top:18px}
+ .vz-lb-category-grid{grid-template-columns:1fr}
+ .vz-lb-category{padding:21px 17px}
+ .vz-lb-method{grid-template-columns:1fr;gap:13px;padding:25px 6vw}
+}
