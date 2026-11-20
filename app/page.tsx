@@ -206,7 +206,7 @@ export default function Home() {
 
       <footer className="vz-footer">
         <div className="vz-footer-brand"><Logo /><p>Ideas. Votes. Impact.</p></div>
-        <nav><a href="#how-it-works">HOW IT WORKS</a><a href="#live-vote">LIVE VOTE</a><a href="/leaderboard">LEADERBOARD</a><a href="/login">LOG IN</a><a href="/signup">SIGN UP</a></nav>
+        <nav><a href="#how-it-works">HOW IT WORKS</a><a href="#live-vote">LIVE VOTE</a><a href="/leaderboard">LEADERBOARD</a><a href="/partner">PARTNER WITH VEZQO</a><a href="/login">LOG IN</a><a href="/signup">SIGN UP</a></nav>
         <div className="vz-footer-bottom"><span>© {new Date().getFullYear()} VEZQO. ALL RIGHTS RESERVED.</span><span>BUILT FOR IDEAS THAT DESERVE A REAL ANSWER.</span></div>
       </footer>
     </main>
