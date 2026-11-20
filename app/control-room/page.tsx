@@ -28,7 +28,7 @@ export default async function ControlRoomPage() {
     { count: affiliateClicks },
     { data: categories },
     { data: recentOrders },
-    { data: recentTests },
+    { data: recentTests },\n    { count: partnershipInquiries },\n    { data: recentInquiries },
   ] = await Promise.all([
     db.from("profiles").select("id", { count: "exact", head: true }),
     db.from("tests").select("id", { count: "exact", head: true }),
@@ -38,12 +38,12 @@ export default async function ControlRoomPage() {
     db.from("affiliate_clicks").select("id", { count: "exact", head: true }),
     db.from("categories").select("id,name,slug").eq("active", true).order("sort"),
     db.from("orders").select("id,amount_paise,currency,status,created_at,payment_provider").order("created_at", { ascending: false }).limit(8),
-    db.from("tests").select("id,title,status,created_at,creator_id,categories(name)").order("created_at", { ascending: false }).limit(8),
+    db.from("tests").select("id,title,status,created_at,creator_id,categories(name)").order("created_at", { ascending: false }).limit(8),\n    db.from("partnership_inquiries").select("id", { count: "exact", head: true }),\n    db.from("partnership_inquiries").select("id,contact_name,email,company,inquiry_type,status,created_at").order("created_at", { ascending: false }).limit(8),
   ]);
 
   const stats = [
     ["MEMBERS", users ?? 0], ["ALL TESTS", tests ?? 0], ["LIVE TESTS", activeTests ?? 0],
-    ["ORDERS", orders ?? 0], ["PAYMENT RECORDS", payments ?? 0], ["AFFILIATE CLICKS", affiliateClicks ?? 0],
+    ["ORDERS", orders ?? 0], ["PAYMENT RECORDS", payments ?? 0], ["AFFILIATE CLICKS", affiliateClicks ?? 0], ["PARTNERSHIP LEADS", partnershipInquiries ?? 0],
   ];
 
   return (
@@ -59,7 +59,7 @@ export default async function ControlRoomPage() {
           <section className="vz-control-panel"><div className="vz-control-panel-head"><span>03 / RECENT ORDERS</span><b>{(recentOrders??[]).length} SHOWN</b></div><h2>PAYMENT ACTIVITY.</h2>{(recentOrders??[]).length===0?<p className="vz-control-empty">No orders recorded yet.</p>:(recentOrders??[]).map((order:any)=><div className="vz-control-row" key={order.id}><span>{order.currency} {(order.amount_paise/100).toLocaleString("en-IN")}<small>{new Date(order.created_at).toLocaleDateString("en-IN")}</small></span><b>{String(order.status).toUpperCase()}</b></div>)}</section>
           <section className="vz-control-panel vz-control-wide"><div className="vz-control-panel-head"><span>04 / RECENT LISTINGS</span><b>{(recentTests??[]).length} SHOWN</b></div><h2>WHAT'S BEING BUILT.</h2>{(recentTests??[]).length===0?<p className="vz-control-empty">No listings created yet.</p>:(recentTests??[]).map((test:any)=><div className="vz-control-row" key={test.id}><span>{test.title}<small>{Array.isArray(test.categories)?test.categories[0]?.name:test.categories?.name} · {new Date(test.created_at).toLocaleDateString("en-IN")}</small></span><b>{String(test.status).toUpperCase()}</b></div>)}</section>
         </div>
-        <p className="vz-control-note">Private operational view. Payment counts are records, not verified settlement totals. Affiliate click counts are traffic events, not confirmed commissions. Check provider dashboards for settled funds and approved commissions.</p>
+        <section className="vz-control-panel vz-control-wide" style={{marginTop:14}}><div className="vz-control-panel-head"><span>05 / COMMERCIAL PIPELINE</span><b>{(recentInquiries??[]).length} RECENT ENQUIRIES</b></div><h2>PARTNERSHIP LEADS.</h2>{(recentInquiries??[]).length===0?<p className="vz-control-empty">No partnership enquiries yet.</p>:(recentInquiries??[]).map((lead:any)=><div className="vz-control-row" key={lead.id}><span>{lead.company} · {lead.contact_name}<small>{lead.email} · {String(lead.inquiry_type).replace(/_/g," ").toUpperCase()} · {new Date(lead.created_at).toLocaleDateString("en-IN")}</small></span><b>{String(lead.status).toUpperCase()}</b></div>)}</section>\n        <p className="vz-control-note">Private operational view. Payment counts are records, not verified settlement totals. Affiliate click counts are traffic events, not confirmed commissions. Check provider dashboards for settled funds and approved commissions.</p>
       </section>
       <footer className="vz-footer"><div className="vz-footer-brand"><Logo/><p>Private owner tools.</p></div><nav><a href="/">PUBLIC SITE</a><a href="/account">MEMBER WORKSPACE</a></nav><div className="vz-footer-bottom"><span>© {new Date().getFullYear()} VEZQO</span><span>OWNER ACCESS ONLY</span></div></footer>
     </main>
