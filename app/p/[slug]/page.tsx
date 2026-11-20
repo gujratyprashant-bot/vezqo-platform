@@ -6,7 +6,7 @@ export default async function PublicIdeaPage({ params }: { params: Promise<{ slu
   const supabase = createAdminClient();
   const { data: item, error } = await supabase
     .from("tests")
-    .select("id,slug,title,description,image_url,official_url,affiliate_url,affiliate_network,want_count,kill_count,categories(name,slug)")
+    .select("id,slug,title,description,image_url,official_url,affiliate_url,affiliate_network,category_details,want_count,kill_count,categories(name,slug)")
     .eq("slug", slug)
     .eq("status", "active")
     .maybeSingle();
@@ -25,6 +25,7 @@ export default async function PublicIdeaPage({ params }: { params: Promise<{ slu
         <h1>{item.title}</h1>
         <p>{item.description}</p>
         <div className="vz-public-votes"><div><b>{item.want_count ?? 0}</b><span>WANT IT</span></div><i/><div><b>{item.kill_count ?? 0}</b><span>KILL IT</span></div></div>
+        {item.category_details && Object.entries(item.category_details as Record<string,string>).filter(([,value])=>Boolean(value)).length>0 && <dl className="vz-public-details">{Object.entries(item.category_details as Record<string,string>).filter(([,value])=>Boolean(value)).map(([key,value])=><div key={key}><dt>{key.replace(/_/g," ").toUpperCase()}</dt><dd>{value}</dd></div>)}</dl>}
         <div className="vz-public-actions">
           {item.official_url && <a className="vz-public-official" href={"/go/" + item.id + "/official"} rel="nofollow sponsored">VISIT OFFICIAL PAGE <span>↗</span></a>}
           {item.affiliate_url && <a className="vz-public-affiliate" href={"/go/" + item.id + "/affiliate"} rel="nofollow sponsored">EXPLORE THIS PICK <span>↗</span></a>}
