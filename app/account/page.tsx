@@ -41,6 +41,8 @@ async function createDraft(formData: FormData) {
   const officialUrl = String(formData.get("official_url") ?? "").trim();
   const affiliateUrl = String(formData.get("affiliate_url") ?? "").trim();
   const affiliateNetwork = String(formData.get("affiliate_network") ?? "").trim();
+  let categoryDetails: Record<string, string> = {};
+  try { const raw = JSON.parse(String(formData.get("category_details") ?? "{}")); if (raw && typeof raw === "object" && !Array.isArray(raw)) categoryDetails = Object.fromEntries(Object.entries(raw).filter(([k,v]) => typeof k === "string" && typeof v === "string").map(([k,v]) => [k, String(v).trim().slice(0, 500)])); } catch { redirect("/account?error=validation"); }
   const validHttpsUrl = (value: string) => { if (!value) return true; try { const url = new URL(value); return url.protocol === "https:" && !url.username && !url.password && value.length <= 2048; } catch { return false; } };
 
   if (title.length < 3 || title.length > 120 || description.length < 10 || description.length > 600 || !categoryId || !validHttpsUrl(imageUrl) || !validHttpsUrl(officialUrl) || !validHttpsUrl(affiliateUrl) || (affiliateUrl && !["cuelinks","impact","partnerstack","other"].includes(affiliateNetwork))) {
@@ -89,6 +91,7 @@ async function createDraft(formData: FormData) {
     official_url: officialUrl || null,
     affiliate_url: affiliateUrl || null,
     affiliate_network: affiliateUrl ? affiliateNetwork : null,
+    category_details: categoryDetails,
   });
 
   if (error) redirect("/account?error=create");
