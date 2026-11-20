@@ -1,0 +1,34 @@
+
+/* VEZQO commercial partnership pipeline */
+.vz-partner-page{background:#0a0809;min-height:100vh}
+.vz-partner-hero{padding:clamp(65px,10vw,130px) 7vw 70px;background:radial-gradient(ellipse at 80% 35%,#ff60351e,transparent 38%),linear-gradient(130deg,#171012,#0c090b)}
+.vz-partner-hero h1{font:800 clamp(64px,11vw,142px)/.82 "Space Grotesk",sans-serif;letter-spacing:-.09em;margin:46px 0 26px}
+.vz-partner-hero h1 em,.vz-partner-aside h2 em,.vz-partner-success h2 em{font-style:normal;color:#ff7549}
+.vz-partner-hero>p{max-width:600px;color:#b8a9a3;font-size:13px;line-height:1.9}
+.vz-partner-tags{display:flex;flex-wrap:wrap;gap:10px 24px;margin-top:38px;color:#ff9a76;font-size:8px;letter-spacing:.13em}
+.vz-partner-content{display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);gap:7vw;padding:80px 7vw 100px}
+.vz-partner-aside>span,.vz-partner-form-head,.vz-partner-success>span{color:#ff9871;font-size:8px;letter-spacing:.15em}
+.vz-partner-aside h2,.vz-partner-success h2{font:750 clamp(42px,6vw,72px)/.9 "Space Grotesk",sans-serif;letter-spacing:-.075em;margin:28px 0 20px}
+.vz-partner-aside>p,.vz-partner-success>p{max-width:430px;color:#a99b97;font-size:12px;line-height:1.9}
+.vz-partner-offers{margin-top:44px}
+.vz-partner-offers article{display:flex;gap:18px;padding:19px 0;border-top:1px solid #ffffff18}
+.vz-partner-offers article>b{color:#ff8259;font-size:9px}
+.vz-partner-offers strong{display:block;font-size:9px;letter-spacing:.12em}
+.vz-partner-offers small{display:block;margin-top:7px;color:#a99b97;font-size:10px}
+.vz-partner-form-wrap{border:1px solid #ffffff1d;background:linear-gradient(145deg,#1b1315,#100d0f);padding:clamp(22px,4vw,44px)}
+.vz-partner-form{display:flex;flex-direction:column;gap:18px}
+.vz-partner-form-head{display:flex;justify-content:space-between;margin-bottom:10px}
+.vz-partner-form-head b{color:#a99b97;font-weight:500}
+.vz-partner-form label{display:flex;flex-direction:column;gap:8px;color:#d6c8c2;font-size:8px;font-weight:800;letter-spacing:.12em}
+.vz-partner-form input,.vz-partner-form select,.vz-partner-form textarea{width:100%;border:1px solid #ffffff22;background:#0b090b;color:#fff;padding:14px;font:400 12px Arial;outline:none;border-radius:0}
+.vz-partner-form input:focus,.vz-partner-form select:focus,.vz-partner-form textarea:focus{border-color:#ff7549;box-shadow:0 0 0 3px #ff75491a}
+.vz-partner-form select option{background:#111}
+.vz-partner-form textarea{resize:vertical}
+.vz-partner-optional{color:#ff9871;font-size:7px}
+.vz-partner-honeypot{position:absolute;left:-10000px;width:1px;height:1px;overflow:hidden}
+.vz-partner-privacy{color:#8f817d;font-size:9px;line-height:1.7}
+.vz-partner-error{color:#ff9b8b;font-size:10px}
+.vz-partner-form>button,.vz-partner-success button{min-height:52px;padding:0 20px;border:0;background:linear-gradient(100deg,#ff4829,#ff9236);color:#170805;font-size:9px;font-weight:900;letter-spacing:.12em;cursor:pointer}
+.vz-partner-form>button:disabled{opacity:.6;cursor:wait}
+.vz-partner-success{padding:25px 0}
+@media(max-width:760px){.vz-partner-content{grid-template-columns:1fr;padding:55px 6vw 70px;gap:38px}.vz-partner-hero{padding:60px 6vw}.vz-partner-tags{gap:12px}}
