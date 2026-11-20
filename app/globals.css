@@ -930,3 +930,22 @@ a,button{-webkit-tap-highlight-color:transparent}
 .auth-recovery-wrap form>button{height:52px;margin-top:24px;border:0;background:linear-gradient(100deg,#ff3c20,#ff8b32);color:#1a0804;font-size:9px;font-weight:900;letter-spacing:.14em;cursor:pointer}
 .auth-recovery-wrap .auth-home{margin-top:24px}
 @media(max-width:520px){.auth-recovery-wrap{padding:26px 20px}}
+
+/* Public listing participation */
+.vz-public-participate{margin:28px 0 24px;padding:22px;border:1px solid #ffffff24;background:linear-gradient(145deg,#1a1414,#0d0d10);box-shadow:0 18px 50px #0005}
+.vz-public-vote-heading>span{font-size:9px;font-weight:900;letter-spacing:.16em;color:#ff956d}
+.vz-public-vote-heading p{margin:9px 0 17px;color:#b9aeaa;font-size:13px;line-height:1.65}
+.vz-public-vote-buttons{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.vz-public-vote-buttons button{min-height:52px;border:1px solid #ff6a3b;background:linear-gradient(110deg,#ff3b20,#ff842e);color:#1a0804;font-size:11px;font-weight:900;letter-spacing:.12em;cursor:pointer;display:flex;align-items:center;justify-content:space-between;padding:0 16px;transition:transform .3s,box-shadow .3s,opacity .3s}
+.vz-public-vote-buttons button.kill{background:transparent;border-color:#ffffff38;color:#f6ece8}
+.vz-public-vote-buttons button:hover:not(:disabled){transform:translateY(-3px);box-shadow:0 10px 25px #ff512733}
+.vz-public-vote-buttons button:disabled{opacity:.55;cursor:not-allowed}
+.vz-public-vote-buttons button>span{font-size:18px}
+.vz-public-vote-foot{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:16px}
+.vz-public-vote-foot>span{font-size:8px;color:#8e827d;letter-spacing:.12em;font-weight:800}
+.vz-public-vote-foot button{border:0;background:none;color:#ff9a72;font-size:9px;font-weight:900;letter-spacing:.1em;cursor:pointer;padding:8px 0}
+.vz-public-vote-message{margin:12px 0 0;color:#f3c3ad;font-size:12px;line-height:1.5}
+.vz-public-live-counts{display:flex;align-items:center;gap:16px;border-top:1px solid #ffffff1b;margin-top:12px;padding-top:13px;color:#a99d98;font-size:9px;font-weight:800;letter-spacing:.1em}
+.vz-public-live-counts b{font:700 17px "Space Grotesk",sans-serif;color:#fff;margin-right:5px}
+.vz-public-live-counts i{height:18px;width:1px;background:#ffffff2b}
+@media(max-width:560px){.vz-public-participate{padding:16px}.vz-public-vote-buttons{grid-template-columns:1fr}.vz-public-vote-foot{align-items:flex-start;flex-direction:column;gap:5px}}
