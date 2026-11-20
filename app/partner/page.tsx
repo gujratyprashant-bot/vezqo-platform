@@ -2,6 +2,7 @@
 
 import { FormEvent, useState } from "react";
 import Logo from "@/app/components/logo";
+import "./partner.css";
 
 const types = [
   ["brand_campaign","Brand campaign / product testing"],
@@ -18,13 +19,14 @@ export default function PartnerPage() {
   const [error,setError] = useState("");
   async function submit(event:FormEvent<HTMLFormElement>) {
     event.preventDefault(); setBusy(true); setError("");
-    const form = new FormData(event.currentTarget);
+    const formElement = event.currentTarget;
+    const form = new FormData(formElement);
     const payload = Object.fromEntries(form.entries());
     try {
       const response = await fetch("/api/partnership-inquiries",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(payload)});
       const result = await response.json();
       if(!response.ok) throw new Error(result.error || "Submission failed.");
-      setDone(true); event.currentTarget.reset();
+      setDone(true); formElement.reset();
     } catch(e) { setError(e instanceof Error?e.message:"Something went wrong."); }
     finally { setBusy(false); }
   }
