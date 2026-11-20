@@ -1,18 +1,57 @@
 import { notFound } from "next/navigation";
+import type { Metadata } from "next";
 import { createAdminClient } from "@/lib/supabase/admin";
+import PublicVotePanel from "@/app/components/public-vote-panel";
 
-export default async function PublicIdeaPage({ params }: { params: Promise<{ slug: string }> }) {
-  const { slug } = await params;
+type PageProps = { params: Promise<{ slug: string }> };
+
+async function getListing(slug: string) {
   const supabase = createAdminClient();
-  const { data: item, error } = await supabase
+  const { data, error } = await supabase
     .from("tests")
-    .select("id,slug,title,description,image_url,official_url,affiliate_url,affiliate_network,category_details,want_count,kill_count,categories(name,slug)")
+    .select("id,slug,title,description,image_url,official_url,affiliate_url,affiliate_network,category_details,want_count,kill_count,status,categories(name,slug)")
     .eq("slug", slug)
     .eq("status", "active")
     .maybeSingle();
-  if (error || !item) notFound();
+  if (error || !data) return null;
+  return data;
+}
+
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const { slug } = await params;
+  const item = await getListing(slug);
+  if (!item) return { title: "Idea not found | VEZQO" };
+  const title = item.title + " — Vote on VEZQO";
+  const description = item.description.slice(0, 160);
+  return {
+    title,
+    description,
+    openGraph: {
+      title,
+      description,
+      type: "article",
+      siteName: "VEZQO",
+      ...(item.image_url ? { images: [{ url: item.image_url, alt: item.title }] } : {}),
+    },
+    twitter: {
+      card: item.image_url ? "summary_large_image" : "summary",
+      title,
+      description,
+      ...(item.image_url ? { images: [item.image_url] } : {}),
+    },
+  };
+}
+
+export default async function PublicIdeaPage({ params }: PageProps) {
+  const { slug } = await params;
+  const item = await getListing(slug);
+  if (!item) notFound();
 
   const category = Array.isArray(item.categories) ? item.categories[0] : item.categories;
+  const details = item.category_details && typeof item.category_details === "object"
+    ? Object.entries(item.category_details as Record<string, unknown>).filter(([, value]) => typeof value === "string" && value.trim())
+    : [];
+
   return <main className="vz-public-listing">
     <header className="vz-public-top"><a href="/" className="vz-public-brand">VEZQO<span>.</span></a><span>AN IDEA WORTH A CLOSER LOOK</span></header>
     <article className="vz-public-card">
@@ -24,8 +63,13 @@ export default async function PublicIdeaPage({ params }: { params: Promise<{ slu
         <span className="vz-public-kicker">VEZQO / COMMUNITY TEST</span>
         <h1>{item.title}</h1>
         <p>{item.description}</p>
-        <div className="vz-public-votes"><div><b>{item.want_count ?? 0}</b><span>WANT IT</span></div><i/><div><b>{item.kill_count ?? 0}</b><span>KILL IT</span></div></div>
-        {item.category_details && Object.entries(item.category_details as Record<string,string>).filter(([,value])=>Boolean(value)).length>0 && <dl className="vz-public-details">{Object.entries(item.category_details as Record<string,string>).filter(([,value])=>Boolean(value)).map(([key,value])=><div key={key}><dt>{key.replace(/_/g," ").toUpperCase()}</dt><dd>{value}</dd></div>)}</dl>}
+        <PublicVotePanel
+          slug={item.slug}
+          initialWant={item.want_count ?? 0}
+          initialKill={item.kill_count ?? 0}
+          active={item.status === "active"}
+        />
+        {details.length > 0 && <dl className="vz-public-details">{details.map(([key, value]) => <div key={key}><dt>{key.replace(/_/g, " ").toUpperCase()}</dt><dd>{String(value)}</dd></div>)}</dl>}
         <div className="vz-public-actions">
           {item.official_url && <a className="vz-public-official" href={"/go/" + item.id + "/official"} rel="nofollow sponsored">VISIT OFFICIAL PAGE <span>↗</span></a>}
           {item.affiliate_url && <a className="vz-public-affiliate" href={"/go/" + item.id + "/affiliate"} rel="nofollow sponsored">EXPLORE THIS PICK <span>↗</span></a>}
